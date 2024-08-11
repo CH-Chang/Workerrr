@@ -66,26 +66,26 @@ const prepareBMSSSOHeaders = (): Record<string, string> => {
 	}
 }
 
-const login = async (jar: CookieJar): Promise<{ success: boolean, guid: string | null }> => {
+const login = async (jar: CookieJar): Promise<{ success: boolean, memo: string, guid: string }> => {
 	const bmsSSOData = await prepareBMSSSOData(jar)
 	const bmsSSOHeaders = prepareBMSSSOHeaders()
 	const bmsSSOResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Homepage.aspx`, bmsSSOData, bmsSSOHeaders)
-	if (bmsSSOResponse.status !== 200) return { success: false, guid: null }
+	if (bmsSSOResponse.status !== 200) return { success: false, memo: 'BMS登入回傳非200的狀態碼', guid: '' }
 
 	const bmsSSOResponseText = await bmsSSOResponse.text()
 	const bmsUrlMatched = new RegExp('window\\.open\\(\\\'(.*)\\\'\\)').exec(bmsSSOResponseText)
 	const bmsUrl = bmsUrlMatched?.[1]
-	if (typeof bmsUrl !== 'string') return { success: false, guid: null }
+	if (typeof bmsUrl !== 'string') return { success: false, memo: '取得BMS SSO登入網址錯誤', guid: '' }
 
 	const parsedBMSUrl = urlParse(bmsUrl)
 	const parsedBMSUrlQuery = qs.parse(parsedBMSUrl.query, { ignoreQueryPrefix: true })
 	const guid = parsedBMSUrlQuery.hash
-	if (typeof guid !== 'string') return { success: false, guid: null }
+	if (typeof guid !== 'string') return { success: false, memo: '取得BMS SSO登入雜湊失敗', guid: '' }
 
 	const loginBMSResponse = await requests.get(jar, bmsUrl)
-	if (loginBMSResponse.status !== 200) return { success: false, guid: null }
+	if (loginBMSResponse.status !== 200) return { success: false, memo: '登入BMS回傳非200的狀態碼', guid: '' }
 
-	return { success: true, guid: guid }
+	return { success: true, memo: '', guid: guid }
 }
 
 export const loginBMS = login

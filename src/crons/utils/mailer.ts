@@ -1,3 +1,4 @@
-export const mail = async (email: string, result: boolean, account: string, type: string): Promise<void> => {
+import { type Env } from '../../share'
 
+export const mail = async (env: Env, status: boolean, email: string, account: string, type: string): Promise<void> => {
 }

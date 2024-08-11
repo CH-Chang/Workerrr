@@ -79,17 +79,19 @@ const prepareAuthHeaders = (): Record<string, string> => {
 	}
 }
 
-const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: string): Promise<{ success: boolean }> => {
+const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: string): Promise<{ success: boolean, memo: string }> => {
 	const loginData = await prepareLoginData(jar, punchInAccount, punchInPassword)
 	const loginHeaders = prepareLoginHeaders()
 	const loginResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Login.aspx?ReturnUrl=/UOF`, loginData, loginHeaders)
-	if (loginResponse.status !== 200) return { success: false }
+	const loginResponseText = await loginResponse.text()
+	if (loginResponse.status !== 200) return { success: false, memo: 'EIP登入回傳非200的狀態碼' }
+	if (!loginResponseText.includes('Authentication.aspx')) return { success: false, memo: 'EIP登入回傳失敗' }
 
 	const authHeaders = prepareAuthHeaders()
 	const authResponse = await requests.get(jar, `${EIP_BASE_URL}/UOF/Login/Authentication.aspx`, authHeaders)
-	if (authResponse.status !== 302) return { success: false }
+	if (authResponse.status !== 302) return { success: false, memo: 'EIP授權回傳非302的狀態碼' }
 
-	return { success: true }
+	return { success: true, memo: '' }
 }
 
 export const loginEip = login

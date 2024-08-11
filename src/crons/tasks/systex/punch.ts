@@ -114,25 +114,25 @@ const doPunch = async (jar: CookieJar, account: string, guid: string, location: 
 	return { success: true }
 }
 
-export const punch = async (jar: CookieJar, account: string, guid: string): Promise<{ success: boolean }> => {
+export const punch = async (jar: CookieJar, account: string, guid: string): Promise<{ success: boolean, memo: string }> => {
 	const { success: querySuccess, location, errorCode } = await query(jar, account, guid)
 	if (!querySuccess) {
-		return { success: false }
+		return { success: false, memo: 'BMS查詢失敗' }
 	}
 
 	if (typeof location !== 'string') {
-		return { success: false }
+		return { success: false, memo: 'BMS回傳非法的用戶打卡地點' }
 	}
 
 	if (errorCodes.includes(errorCode ?? '')) {
-		console.log('Skip due to ' + errorCodeDescMap[errorCode as string] ?? 'unknown error code')
-		return { success: false }
+		const memo = errorCodeDescMap[errorCode as string] ?? 'unknown error code'
+		return { success: false, memo: memo }
 	}
 
 	const { success: doPunchSuccess } = await doPunch(jar, account, guid, location)
 	if (!doPunchSuccess) {
-		return { success: false }
+		return { success: false, memo: '打卡失敗' }
 	}
 
-	return { success: true }
+	return { success: true, memo: '' }
 }
