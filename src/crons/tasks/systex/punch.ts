@@ -64,17 +64,17 @@ const query = async (jar: CookieJar, account: string, guid: string): Promise<{ s
 	const url = `${BMS_BASE_URL}/bms2/service/hr.punchQuery`
 
 	const data = qs.stringify({
-        userid: account,
-        guid: guid,
+		userid: account,
+		guid: guid,
 		year: year,
-        month: month,
-    })
+		month: month,
+	})
 
 	const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
 		'Referer': `https://bms.systex.com/bms2/service/app.login?userid=${account}&menuid=193&hash=${guid}`
-    }
+	}
 
 	const response = await requests.post(jar, url, data, headers)
 	if (response.status !== 200) return { success: false, location: null, errorCode: null }
@@ -93,19 +93,19 @@ const doPunch = async (jar: CookieJar, account: string, guid: string, location: 
 	const url = `${BMS_BASE_URL}/bms2/service/hr.punchSave`
 
 	const data = qs.stringify({
-        userid: account,
-        guid: guid,
-        hours: '9',
-        minutes: weekDay,
-        locationF: '工作地點',
-        locationS: location,
-        appName: 'eip',
-    })
+		userid: account,
+		guid: guid,
+		hours: '9',
+		minutes: weekDay,
+		locationF: '工作地點',
+		locationS: location,
+		appName: 'eip',
+	})
 
 	const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    }
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	}
 
 	// TODO: 待測試後啟用
 	// const response = await requests.post(jar, url, data, headers)
