@@ -79,13 +79,39 @@ const prepareAuthHeaders = (): Record<string, string> => {
 	}
 }
 
+const prepareOverLoginData = async (jar: CookieJar, loginData: string, loginResponseText: string): Promise<string> => {
+	const parsed = qs.parse(loginData, { ignoreQueryPrefix: true })
+
+	parsed['ScriptManager1'] = 'UpdatePanel11|btnRemoveRepeatLogin'
+	parsed['txtPwd'] = ''
+	parsed['__VIEWSTATE'] = new RegExp('__VIEWSTATE\\|([^|]+)').exec(loginResponseText)?.[1]
+
+	return qs.stringify(parsed)
+}
+
+const prepareOverLoginHeaders = (): Record<string, string> => {
+	return {
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	}
+}
+
 const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: string): Promise<{ success: boolean, memo: string }> => {
 	const loginData = await prepareLoginData(jar, punchInAccount, punchInPassword)
 	const loginHeaders = prepareLoginHeaders()
 	const loginResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Login.aspx?ReturnUrl=/UOF`, loginData, loginHeaders)
 	const loginResponseText = await loginResponse.text()
 	if (loginResponse.status !== 200) return { success: false, memo: 'EIP登入回傳非200的狀態碼' }
-	if (!loginResponseText.includes('Authentication.aspx')) return { success: false, memo: 'EIP登入回傳失敗' }
+
+	if (!loginResponseText.includes('Authentication.aspx'))
+	{
+		const overLoginData = await prepareOverLoginData(jar, loginData, loginResponseText)
+		const overLoginHeaders = prepareOverLoginHeaders()
+		const overLoginResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Login.aspx?ReturnUrl=/UOF`, overLoginData, overLoginHeaders)
+		const overLoginResponseText = await overLoginResponse.text()
+		if (overLoginResponse.status !== 200) return { success: false, memo: 'EIP重複登入回傳非200的狀態碼' }
+		if (!overLoginResponseText.includes('Authentication.aspx')) return { success: false, memo: 'EIP重複登入回傳失敗' }
+	}
 
 	const authHeaders = prepareAuthHeaders()
 	const authResponse = await requests.get(jar, `${EIP_BASE_URL}/UOF/Login/Authentication.aspx`, authHeaders)
