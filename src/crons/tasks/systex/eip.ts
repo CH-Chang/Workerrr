@@ -149,8 +149,6 @@ const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: st
 		const overLoginResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Login.aspx?ReturnUrl=/UOF`, overLoginData, overLoginHeaders)
 		const overLoginResponseText = await overLoginResponse.text()
 
-		console.log(overLoginResponseText)
-
 		if (overLoginResponse.status !== 200) {
 			return { success: false, memo: 'EIP重複登入回傳非200的狀態碼' }
 		}
