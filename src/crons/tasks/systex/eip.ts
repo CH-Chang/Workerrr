@@ -82,11 +82,47 @@ const prepareAuthHeaders = (): Record<string, string> => {
 const prepareOverLoginData = async (jar: CookieJar, loginData: string, loginResponseText: string): Promise<string> => {
 	const parsed = qs.parse(loginData, { ignoreQueryPrefix: true })
 
-	parsed['ScriptManager1'] = 'UpdatePanel11|btnRemoveRepeatLogin'
-	parsed['txtPwd'] = ''
-	parsed['__VIEWSTATE'] = new RegExp('__VIEWSTATE\\|([^|]+)').exec(loginResponseText)?.[1]
+	const scriptManager1 = 'UpdatePanel1|btnSubmit'
+	const scriptManager1TSM = parsed['ScriptManager1_TSM'] as string
+	const eventTarget = ''
+	const eventArgument = ''
+	const lastFocus = ''
+	const viewState = new RegExp('__VIEWSTATE\\|([^|]+)').exec(loginResponseText)?.[1]
+	const viewStateGenerator = 'C873A585'
+	const viewStateEncrypted = ''
+	const ddlCulture = 'zh-TW'
+	const txtAccount = parsed['txtAccount'] as string
+	const txtPwd = ''
+	const txtAccount2 = ''
+	const hdflag = 'false'
+	const hfIsAdAuth = 'true'
+	const hfIsDownloadComplete = '0'
+	const hfUserGuid = new RegExp('<input type=\\"hidden\\" name=\\"hfUserGuid\\" id=\\"hfUserGuid\\" value=\\"(.*)\\" />').exec(loginResponseText)?.[1]
+	const asyncPost = 'true'
+	const btnRemoveRepeatLogin = '確定'
 
-	return qs.stringify(parsed)
+	const data = {
+		'ScriptManager1': scriptManager1,
+		'ScriptManager1_TSM': scriptManager1TSM,
+		'__EVENTTARGET': eventTarget,
+		'__EVENTARGUMENT': eventArgument,
+		'__LASTFOCUS': lastFocus,
+		'__VIEWSTATE': viewState,
+		'__VIEWSTATEGENERATOR': viewStateGenerator,
+		'__VIEWSTATEENCRYPTED': viewStateEncrypted,
+		'ddlCulture': ddlCulture,
+		'txtAccount': txtAccount,
+		'txtPwd': txtPwd,
+		'txtAccount2': txtAccount2,
+		'hdflag': hdflag,
+		'hfIsAdAuth': hfIsAdAuth,
+		'hfUserGuid': hfUserGuid,
+		'hfIsDownloadComplete': hfIsDownloadComplete,
+		'__ASYNCPOST': asyncPost,
+		'btnRemoveRepeatLogin': btnRemoveRepeatLogin
+	}
+
+	return qs.stringify(data)
 }
 
 const prepareOverLoginHeaders = (): Record<string, string> => {
@@ -101,7 +137,10 @@ const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: st
 	const loginHeaders = prepareLoginHeaders()
 	const loginResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Login.aspx?ReturnUrl=/UOF`, loginData, loginHeaders)
 	const loginResponseText = await loginResponse.text()
-	if (loginResponse.status !== 200) return { success: false, memo: 'EIP登入回傳非200的狀態碼' }
+
+	if (loginResponse.status !== 200) {
+		return { success: false, memo: 'EIP登入回傳非200的狀態碼' }
+	}
 
 	if (!loginResponseText.includes('Authentication.aspx'))
 	{
@@ -109,13 +148,23 @@ const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: st
 		const overLoginHeaders = prepareOverLoginHeaders()
 		const overLoginResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Login.aspx?ReturnUrl=/UOF`, overLoginData, overLoginHeaders)
 		const overLoginResponseText = await overLoginResponse.text()
-		if (overLoginResponse.status !== 200) return { success: false, memo: 'EIP重複登入回傳非200的狀態碼' }
-		if (!overLoginResponseText.includes('Authentication.aspx')) return { success: false, memo: 'EIP重複登入回傳失敗' }
+
+		console.log(overLoginResponseText)
+
+		if (overLoginResponse.status !== 200) {
+			return { success: false, memo: 'EIP重複登入回傳非200的狀態碼' }
+		}
+
+		if (!overLoginResponseText.includes('Authentication.aspx')) {
+			return { success: false, memo: 'EIP重複登入回傳失敗' }
+		}
 	}
 
 	const authHeaders = prepareAuthHeaders()
 	const authResponse = await requests.get(jar, `${EIP_BASE_URL}/UOF/Login/Authentication.aspx`, authHeaders)
-	if (authResponse.status !== 302) return { success: false, memo: 'EIP授權回傳非302的狀態碼' }
+	if (authResponse.status !== 302) {
+		return { success: false, memo: 'EIP授權回傳非302的狀態碼' }
+	}
 
 	return { success: true, memo: '' }
 }
