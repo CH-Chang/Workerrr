@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240722.0",
+    "@types/mustache": "^4.2.5",
     "@types/qs": "^6.9.15",
     "@types/tough-cookie": "^4.0.5",
     "@types/url-parse": "^1.4.11",
@@ -23,8 +24,10 @@
     "hono": "^4.5.1",
     "http-cookie-agent": "^6.0.5",
     "https": "^1.0.0",
+    "mustache": "^4.2.0",
     "p-limit": "^3.1.0",
     "qs": "^6.12.3",
+    "resend": "^3.5.0",
     "tough-cookie": "^4.1.4",
     "url-parse": "^1.5.10"
   },

@@ -1,7 +1,7 @@
 import { type Env } from '../../share'
 import dayjs from 'dayjs'
 
-export const log = async (env: Env, status: boolean, id: number, memo: string): Promise<void> => {
+export const logPunchIn = async (env: Env, status: boolean, id: number, memo: string): Promise<void> => {
 	await env.DB
 		.prepare("DELETE FROM TB_PUNCH_IN_LOG WHERE punch_in_datetime < DATETIME('now', '-7 day', 'localtime')")
 		.run()
@@ -13,6 +13,23 @@ export const log = async (env: Env, status: boolean, id: number, memo: string): 
 			dayjs().format('YYYY-MM-DD HH:mm:ss'),
 			status ? 'Success' : 'Failed',
 			memo
+		)
+		.run()
+}
+
+export const logEmail = async (env: Env, status: boolean, to: string, subject: string, content: string): Promise<void> => {
+	await env.DB
+		.prepare("DELETE FROM TB_EMAIL_LOG WHERE datetime < DATETIME('now', '-7 day', 'localtime')")
+		.run()
+
+	await env.DB
+		.prepare('INSERT INTO TB_EMAIL_LOG ([to], subject, content, success, datetime) VALUES (?1, ?2, ?3, ?4, ?5)')
+		.bind(
+			to,
+			subject,
+			content,
+			status ? 'Success' : 'Failed',
+			dayjs().format('YYYY-MM-DD HH:mm:ss')
 		)
 		.run()
 }

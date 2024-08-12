@@ -1,7 +1,7 @@
 import { type PunchInRow, type PunchInTask } from '../share'
 import { type Env } from '../../share'
-import { mail } from './mailer'
-import { log } from './logger'
+import { mailPunchIn } from './mailer'
+import { logPunchIn } from './logger'
 import { decrypt } from './cipher'
 import systexTask from '../tasks/systex'
 
@@ -21,6 +21,6 @@ export const runPunchIn = async (env: Env, punchIn: PunchInRow): Promise<void> =
 		? { punchInStatus: false, punchInMemo: '未知打卡類型' }
 		: await task(punchInAccount, decryptedPunchInPassword)
 
-	await mail(env, punchInStatus, notifyEmail, punchInAccount, punchInType)
-	await log(env, punchInStatus, punchInId, punchInMemo)
+	await logPunchIn(env, punchInStatus, punchInId, punchInMemo)
+	await mailPunchIn(env, punchInStatus, punchInMemo, notifyEmail, punchInAccount, punchInType)
 }
