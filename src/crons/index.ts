@@ -12,7 +12,8 @@ const queryPunchIn = async (env: Env): Promise<{ success: boolean, punchIns: Pun
 			punch_in_account  AS punchInAccount,
 			punch_in_password AS punchInPassword,
 			notify_email      AS notifyEmail
-		FROM   TB_PUNCH_IN;`)
+		FROM   TB_PUNCH_IN
+		WHERE punch_in_enable = 'Y';`)
 
 	const { success, results } = await stat.all<PunchInRow>()
 
