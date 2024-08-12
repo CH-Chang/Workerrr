@@ -56,6 +56,12 @@ interface QueryResponse {
 	}>
 }
 
+
+interface SaveResponse {
+	errCde: number,
+	errMsg: string
+}
+
 const query = async (jar: CookieJar, account: string, guid: string): Promise<{ success: boolean, location: string | null, errorCode: string | null }> => {
 	const now = dayjs()
 	const year = now.year().toString()
@@ -107,9 +113,12 @@ const doPunch = async (jar: CookieJar, account: string, guid: string, location: 
 		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	}
 
-	// TODO: 待測試後啟用
-	// const response = await requests.post(jar, url, data, headers)
-	// if (response.status !== 200) return { success: false }
+	const response = await requests.post(jar, url, data, headers)
+	if (response.status !== 200) return { success: false }
+
+	const responseText = await response.text()
+	const parsed = JSON.parse(responseText) as SaveResponse
+	if (parsed.errCde !== 0) return { success: false }
 
 	return { success: true }
 }
