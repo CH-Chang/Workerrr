@@ -1,19 +1,19 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "punch-in"
+name = "workerrr"
 main = "src/index.ts"
 compatibility_date = "2024-07-22"
 node_compat = true
 
 [triggers]
-crons = []
+crons = ["0 8 * * *"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "punch-in-sit"
-database_id = "b6ac5b50-d517-4a50-b264-bbdf1897daf5"
-preview_database_id = "b6ac5b50-d517-4a50-b264-bbdf1897daf5"
+database_name = "workerrr"
+database_id = "c07c1bb8-452f-4fd6-b1de-ba1e0b61c49d"
+preview_database_id = "c07c1bb8-452f-4fd6-b1de-ba1e0b61c49d"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "e7c4697d2e5142129b61b051c8cf6116"
-preview_id = "e7c4697d2e5142129b61b051c8cf6116"
+id = "c151c4fb241241b58b4806b7a12f68e2"
+preview_id = "c151c4fb241241b58b4806b7a12f68e2"
