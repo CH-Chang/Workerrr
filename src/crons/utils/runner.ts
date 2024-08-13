@@ -10,6 +10,24 @@ const taskMap: Record<string, PunchInTask> = {
 	systex: systexTask
 }
 
+const wrapRetry = async (retryCount: number, env: Env, task: PunchInTask, punchInId: number, punchInAccount: string, punchInPassword: string): Promise<{ punchInStatus: boolean, punchInMemo: string }> => {
+	while (true) {
+		const { punchInStatus, punchInMemo } = await task(punchInAccount, punchInPassword)
+		await logPunchIn(env, punchInStatus, punchInId, punchInMemo)
+
+		if (!punchInStatus) {
+			if (retryCount > 0) {
+				retryCount -= 1
+				continue
+			}
+
+			return { punchInStatus, punchInMemo }
+		}
+
+		return { punchInStatus, punchInMemo }
+	}
+}
+
 export const runPunchIn = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 	const { punchInId, punchInType, punchInAccount, punchInPassword, notifyEmail } = punchIn
 
@@ -19,8 +37,8 @@ export const runPunchIn = async (env: Env, punchIn: PunchInRow): Promise<void> =
 
 	const { punchInStatus, punchInMemo } = typeof task === 'undefined'
 		? { punchInStatus: false, punchInMemo: '未知打卡類型' }
-		: await task(punchInAccount, decryptedPunchInPassword)
+		: await wrapRetry(3, env, task, punchInId, punchInAccount, decryptedPunchInPassword)
 
-	await logPunchIn(env, punchInStatus, punchInId, punchInMemo)
+
 	await mailPunchIn(env, punchInStatus, punchInMemo, notifyEmail, punchInAccount, punchInType)
 }

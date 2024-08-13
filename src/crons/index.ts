@@ -5,15 +5,19 @@ import pLimit from "p-limit"
 
 const queryPunchIn = async (env: Env): Promise<{ success: boolean, punchIns: PunchInRow[] }> => {
 	const stat = env.DB.prepare(`
-		SELECT
-			punch_in_id       AS punchInId,
-			user_id           AS userId,
-			punch_in_type     AS punchInType,
-			punch_in_account  AS punchInAccount,
-			punch_in_password AS punchInPassword,
-			notify_email      AS notifyEmail
-		FROM   TB_PUNCH_IN
-		WHERE punch_in_enable = 'Y';`)
+		SELECT P.punch_in_id        AS punchInId
+			,P.user_id           AS userId
+			,P.punch_in_type     AS punchInType
+			,P.punch_in_account  AS punchInAccount
+			,P.punch_in_password AS punchInPassword
+			,P.notify_email      AS notifyEmail
+		FROM   TB_PUNCH_IN AS P
+		WHERE  P.punch_in_enable = 'Y'
+			AND P.punch_in_id NOT IN (SELECT L.punch_in_id
+										FROM   TB_PUNCH_IN_LOG AS L
+										WHERE  L.punch_in_status = 'Success'
+												AND L.punch_in_id = P.punch_in_id
+												AND SUBSTR(L.punch_in_datetime, 0, 11) = DATE('now', 'localtime')); `)
 
 	const { success, results } = await stat.all<PunchInRow>()
 
