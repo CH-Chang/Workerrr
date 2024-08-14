@@ -29,7 +29,10 @@ export const mailPunchIn = async (env: Env, status: boolean, reason: string, ema
 				html: content,
 			})
 
-			await logEmail(env, error === null, email, subject, content)
+			const emailStatus = error === null
+			const emailMessage = error?.message ?? ''
+
+			await logEmail(env, emailStatus, emailMessage, email, subject, content)
 		},
 		{
 			timeout: 0
