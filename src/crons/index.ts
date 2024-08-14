@@ -1,5 +1,6 @@
 import { type Env } from '../share'
 import { type PunchInRow } from './share'
+import { cleanup } from './utils/logger'
 import { runPunchIn } from './utils/runner'
 import pLimit from "p-limit"
 
@@ -29,6 +30,8 @@ const queryPunchIn = async (env: Env): Promise<{ success: boolean, punchIns: Pun
 }
 
 export const scheduled: ExportedHandlerScheduledHandler<Env> = async (event, env, ctx): Promise<void> => {
+	await cleanup(env)
+
 	const { success, punchIns } = await queryPunchIn(env)
 
 	if (!success) {
