@@ -2,6 +2,9 @@ import { type Env } from '../../share'
 import { Resend } from 'resend'
 import { render } from '../template/punchIn'
 import { logEmail } from './logger'
+import AsyncLock from 'async-lock'
+
+const locker = new AsyncLock()
 
 export const mailPunchIn = async (env: Env, status: boolean, reason: string, email: string, account: string, type: string): Promise<void> => {
 	const api = await env.KV.get('RESEND_API_KEY') as string
@@ -16,12 +19,20 @@ export const mailPunchIn = async (env: Env, status: boolean, reason: string, ema
 		type: type.toUpperCase()
 	})
 
-	const { error } = await resend.emails.send({
-		from: 'Workerrr <workerrr@0000886.xyz>',
-		to: email,
-		subject: subject,
-		html: content,
-	})
+	await locker.acquire(
+		'PunchIn',
+		async () => {
+			const { error } = await resend.emails.send({
+				from: 'Workerrr <workerrr@0000886.xyz>',
+				to: email,
+				subject: subject,
+				html: content,
+			})
 
-	await logEmail(env, error === null, email, subject, content)
+			await logEmail(env, error === null, email, subject, content)
+		},
+		{
+			timeout: 0
+		}
+	)
 }

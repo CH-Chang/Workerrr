@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240722.0",
+    "@types/async-lock": "^1.4.2",
     "@types/mustache": "^4.2.5",
     "@types/qs": "^6.9.15",
     "@types/tough-cookie": "^4.0.5",
@@ -19,6 +20,7 @@
     "wrangler": "^3.70.0"
   },
   "dependencies": {
+    "async-lock": "^1.4.1",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.12",
     "hono": "^4.5.1",
