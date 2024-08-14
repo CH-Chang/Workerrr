@@ -33,6 +33,7 @@ export const mailPunchIn = async (env: Env, status: boolean, reason: string, ema
 			const emailMessage = error?.message ?? ''
 
 			await logEmail(env, emailStatus, emailMessage, email, subject, content)
+			await new Promise((resolve) => setTimeout(resolve, 1000))
 		},
 		{
 			timeout: 0
