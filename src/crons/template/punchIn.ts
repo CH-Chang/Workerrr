@@ -135,7 +135,7 @@ const template = `
                                         {{/status}}
                                         {{^status}}
 										<p>自動打卡未執行成功！</p>
-                                        <p>最後一次未執行成功的原因為，</p>
+                                        <p>未執行成功的原因為，</p>
 										<p>{{ reason }}。</p>
                                         {{/status}}
                                         <p>如果您有任何問題，</p>
