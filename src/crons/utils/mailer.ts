@@ -1,26 +1,18 @@
 import { type Env } from '../../share'
 import { Resend } from 'resend'
-import { render } from '../template/punchIn'
+import { render as renderPunchIn } from '../template/punchIn'
+import { render as renderSchedule } from '../template/schedule'
 import { logEmail } from './logger'
 import AsyncLock from 'async-lock'
 
 const locker = new AsyncLock()
 
-export const mailPunchIn = async (env: Env, status: boolean, reason: string, email: string, account: string, type: string): Promise<void> => {
+const send = async (env: Env, email: string, subject: string, content: string): Promise<void> => {
 	const api = await env.KV.get('RESEND_API_KEY') as string
-
-	const resend = new Resend(api);
-
-	const subject = '打工人系統通知'
-	const content = render({
-		status,
-		reason,
-		account,
-		type: type.toUpperCase()
-	})
+	const resend = new Resend(api)
 
 	await locker.acquire(
-		'PunchIn',
+		'Email',
 		async () => {
 			const { error } = await resend.emails.send({
 				from: 'Workerrr <workerrr@0000886.xyz>',
@@ -39,4 +31,27 @@ export const mailPunchIn = async (env: Env, status: boolean, reason: string, ema
 			timeout: 0
 		}
 	)
+}
+
+export const mailSchedule = async (env: Env, email: string, account: string, type: string, url: string): Promise<void> => {
+	const subject = '打工人系統通知'
+	const content = renderSchedule({
+		url,
+		account,
+		type: type.toUpperCase()
+	})
+
+	await send(env, email, subject, content)
+}
+
+export const mailPunchIn = async (env: Env, status: boolean, reason: string, email: string, account: string, type: string): Promise<void> => {
+	const subject = '打工人系統通知'
+	const content = renderPunchIn({
+		status,
+		reason,
+		account,
+		type: type.toUpperCase()
+	})
+
+	await send(env, email, subject, content)
 }

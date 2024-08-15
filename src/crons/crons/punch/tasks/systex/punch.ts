@@ -1,6 +1,6 @@
 import { CookieJar } from 'tough-cookie'
 import { BMS_BASE_URL } from './share'
-import * as requests from '../../utils/requests'
+import * as requests from '../../../../utils/requests'
 import qs from 'qs'
 import dayjs from 'dayjs'
 

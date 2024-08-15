@@ -2,7 +2,7 @@ import { CookieJar } from 'tough-cookie'
 import { EIP_BASE_URL } from './share'
 import urlParse from 'url-parse'
 import qs from 'qs'
-import * as requests from '../../utils/requests'
+import * as requests from '../../../../utils/requests'
 import * as cheerio from 'cheerio'
 
 const prepareHomeHeaders = (): Record<string, string> => {
