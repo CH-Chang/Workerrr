@@ -158,10 +158,11 @@ const template = `
 										<p>{{ type }} 帳號 {{ account }} 的自動打卡</p>
 										<p>系統將排程於今日下午三點，</p>
 										<p>執行打卡批次。</p>
-										<p>如需變更或取消請點擊以下按紐。</p>
+										<p>如需取消請於排程前，</p>
+										<p>點擊以下按紐。</p>
 										<a
 											class="message-mt message-link"
-											href="www.google.com">
+											href="{{ url }}">
 											<button>
 												變更自動打卡排程
 											</button>
