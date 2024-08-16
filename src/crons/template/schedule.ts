@@ -154,10 +154,8 @@ const template = `
                                     <td class="message-box">
                                         <p>感謝您使用打工人系統服務，</p>
                                         <p class="message-mt">我們的系統通知您，</p>
-                                        <p>由於您已在我們的系統註冊，</p>
-										<p>{{ type }} 帳號 {{ account }} 的自動打卡</p>
 										<p>系統將排程於今日下午三點，</p>
-										<p>執行打卡批次。</p>
+										<p>執行 {{ type }} 帳號 {{ account }} 的自動打卡。</p>
 										<p>如需取消請於排程前，</p>
 										<p>點擊以下按紐。</p>
 										<a
@@ -170,7 +168,7 @@ const template = `
 										<p class="message-mt">請注意！</p>
 										<p>該連結為您個人所有，</p>
 										<p>請勿洩露於他人。</p>
-                                        <p>如果您有任何問題，</p>
+                                        <p class="message-mt">如果您有任何問題，</p>
                                         <p>請隨時聯繫我們的客服團隊。</p>
                                     </td>
                                 </tr>

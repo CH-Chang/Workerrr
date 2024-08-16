@@ -16,6 +16,8 @@ interface PunchInRow {
 const query = async (env: Env): Promise<{ success: boolean, punchIns: PunchInRow[] }> => {
 	const stat = env.DB.prepare(`
 		SELECT P.punch_in_id        AS punchInId
+		    ,P.punch_in_account  AS punchInAccount
+			,P.punch_in_type     AS punchInType
 			,P.notify_email      AS notifyEmail
 		FROM   TB_PUNCH_IN AS P
 		WHERE  P.punch_in_enable = 'Y' `)
@@ -62,7 +64,7 @@ const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 }
 
 
-export const schedule: CronTask = async (env: Env): Promise<void> => {
+export const schedule: CronTask<{}> = async (env: Env): Promise<void> => {
 	const { success, punchIns } = await query(env)
 	if (!success) return
 
