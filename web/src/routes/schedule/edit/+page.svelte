@@ -24,12 +24,27 @@
 		]);
 	};
 
+	const handleAddClick = () => {
+		messageBoxStore.push('提示訊息', '打工人開發中，敬請期待！', [
+			{
+				text: '確認'
+			}
+		]);
+	}
+
+	const handleChangePasswordClick = () => {
+		messageBoxStore.push('提示訊息', '打工人開發中，敬請期待！', [
+			{
+				text: '確認'
+			}
+		]);
+	};
+
 	const handleCancelConfirmClick = () => {};
 </script>
 
 <div class="flex flex-col w-full max-w-screen-xl m-auto">
 	<div class="flex flex-row items-center justify-end gap-4">
-		
 		<div>
 			<h2>親愛的打工人您好！</h2>
 		</div>
@@ -78,21 +93,50 @@
 				</svg>
 				<h3>即將執行</h3>
 			</div>
+			<div class="flex flex-row self-end gap-2">
+				<button
+					class="flex flex-row gap-2"
+					on:click={handleAddClick}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						class="size-6"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+					新的！
+				</button>
+			</div>
 			<div class="rounded-xl py-8 px-6 bg-stone-800 mt-4 flex flex-row">
 				<table class="flex-1">
 					<tr>
 						<td class="text-zinc-200 text-sm font-bold py-2">打卡項目</td>
 						<td class="text-zinc-200 text-sm font-bold py-2">打卡帳號</td>
 						<td class="text-zinc-200 text-sm font-bold py-2">執行時間</td>
+						<td class="text-zinc-200 text-sm font-bold py-2">當前狀態</td>
 						<td class="text-zinc-200 text-sm font-bold py-2">相關操作</td>
 					</tr>
 					<tr>
 						<td class="text-zinc-200 text-sm font-normal py-2">SYSTEX</td>
 						<td class="text-zinc-200 text-sm font-normal py-2">1234567</td>
 						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">等待</td>
 						<td class="text-zinc-200 text-sm font-normal py-2">
-							<Button.Root class="bg-zinc-200 text-stone-800 py-1 px-2 rounded-md border-2 border-zinc-200 hover:bg-stone-800 hover:text-zinc-200 transition-all">取消執行</Button.Root>
-							<Button.Root class="bg-zinc-200 text-stone-800 py-1 px-2 rounded-md border-2 border-zinc-200 hover:bg-stone-800 hover:text-zinc-200 transition-all">變更密碼</Button.Root>
+							<Button.Root
+								class="bg-zinc-200 text-stone-800 py-1 px-2 rounded-md border-2 border-zinc-200 hover:bg-stone-800 hover:text-zinc-200 transition-all"
+								on:click={handleCancelClick}
+								>取消執行</Button.Root
+							>
+							<Button.Root
+								class="bg-zinc-200 text-stone-800 py-1 px-2 rounded-md border-2 border-zinc-200 hover:bg-stone-800 hover:text-zinc-200 transition-all"
+								on:click={handleChangePasswordClick}
+								>變更密碼</Button.Root
+							>
 						</td>
 					</tr>
 				</table>
@@ -115,6 +159,46 @@
 					/>
 				</svg>
 				<h3>我的打卡記錄</h3>
+			</div>
+			<div class="rounded-xl py-8 px-6 bg-stone-800 mt-4 flex flex-row">
+				<table class="flex-1">
+					<tr>
+						<td class="text-zinc-200 text-sm font-bold py-2">打卡項目</td>
+						<td class="text-zinc-200 text-sm font-bold py-2">打卡帳號</td>
+						<td class="text-zinc-200 text-sm font-bold py-2">預計時間</td>
+						<td class="text-zinc-200 text-sm font-bold py-2">執行時間</td>
+					</tr>
+					<tr>
+						<td class="text-zinc-200 text-sm font-normal py-2">SYSTEX</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">1234567</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+					</tr>
+					<tr>
+						<td class="text-zinc-200 text-sm font-normal py-2">SYSTEX</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">1234567</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+					</tr>
+					<tr>
+						<td class="text-zinc-200 text-sm font-normal py-2">SYSTEX</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">1234567</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+					</tr>
+					<tr>
+						<td class="text-zinc-200 text-sm font-normal py-2">SYSTEX</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">1234567</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+					</tr>
+					<tr>
+						<td class="text-zinc-200 text-sm font-normal py-2">SYSTEX</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">1234567</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+						<td class="text-zinc-200 text-sm font-normal py-2">2024-08-19 15:00:00</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
