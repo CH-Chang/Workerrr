@@ -1,7 +1,6 @@
-import { type Env } from '../../../../share'
 import { createRoute, z } from '@hono/zod-openapi'
-import { app } from '../../../app'
-import jwt from '@tsndr/cloudflare-worker-jwt'
+import { sign } from '../../../../utils/jwt'
+import { app } from '../../../../app'
 
 interface SSOLoginRequest {
 	type: string
@@ -10,8 +9,9 @@ interface SSOLoginRequest {
 
 app.openapi(
 	createRoute({
+		middleware: [],
 		method: 'post',
-		path: '/ssoLogin',
+		path: '/api/v1/member/ssoLogin',
 		request: {
 			body: {
 				description: '請求內容',
@@ -65,16 +65,6 @@ app.openapi(
 		}
 	}),
 	async (c) => {
-		const kv = c.env.KV
-		const db = c.env.DB
-
-		const secret = await kv.get('JWT_SECRET')
-
-		if (secret === null) return c.json({
-			code: 1,
-			message: '伺服器未配置 JWT 密鑰資訊'
-		}, 500)
-
 		const { type, token } = await c.req.json<SSOLoginRequest>()
 
 		if (typeof type === 'undefined') return c.json({
@@ -92,7 +82,7 @@ app.openapi(
 			message: '不支援的 SSO 登入模式'
 		}, 400)
 
-		const userId = await db.prepare(`
+		const userId = await c.env.DB.prepare(`
 			SELECT U.user_id AS userId
 			FROM   TB_SCHEDULE S
 				LEFT JOIN TB_PUNCH_IN P
@@ -109,12 +99,7 @@ app.openapi(
 			message: '查無用戶資訊'
 		}, 400)
 
-
-		const jwtToken = await jwt.sign({
-			userId,
-			nbf: Math.floor(Date.now() / 1000) + (60 * 60),
-			exp: Math.floor(Date.now() / 1000) + (2 * (60 * 60))
-		}, secret)
+		const jwtToken = await sign(c.env, userId)
 
 		return c.json({
 			code: 0,
