@@ -1,6 +1,6 @@
-import { type Env } from '../../share'
+import { type Env } from '../../../../share'
 import { createRoute, z } from '@hono/zod-openapi'
-import { app } from '../app'
+import { app } from '../../../app'
 import jwt from '@tsndr/cloudflare-worker-jwt'
 
 interface SSOLoginRequest {
