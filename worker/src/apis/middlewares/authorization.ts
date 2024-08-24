@@ -37,4 +37,6 @@ export const authentication = createMiddleware<HonoEnv>(async (c, next) => {
 	}, 403)
 
 	c.set('userId', userId)
+
+	await next()
 })
