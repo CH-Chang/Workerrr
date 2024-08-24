@@ -34,7 +34,7 @@ const query = async (env: Env): Promise<{ success: boolean, punchIns: PunchInRow
 const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 	const { punchInId, punchInAccount, punchInType, notifyEmail } = punchIn
 
-	const key = nanoid()
+	const token = nanoid()
 
 	const contentObject = { punchInId }
 	const content = JSON.stringify(contentObject)
@@ -43,22 +43,22 @@ const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 
 	await env.DB
 		.prepare(`
-			INSERT INTO TB_CACHE
-						(cache_key,
-						cache_content,
-						cache_expiration_datetime)
+			INSERT INTO TB_SCHEDULE
+						(schedule_token,
+						punch_in_id,
+						schedule_expiration_datetime)
 			VALUES      (?1,
 						?2,
 						?3)`)
 		.bind(
-			key,
+			token,
 			content,
 			expiration
 		)
 		.run()
 
 	const baseUrl = await env.KV.get("SCHEDULE_BASE_URL") as string
-	const url = `${baseUrl}?${qs.stringify({ key })}`
+	const url = `${baseUrl}?${qs.stringify({ token })}`
 
 	await mailSchedule(env, notifyEmail, punchInAccount, punchInType, url)
 }

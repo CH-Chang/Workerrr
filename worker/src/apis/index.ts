@@ -1,5 +1,5 @@
 import { app } from './app'
 
-import './member/login'
+import './member/ssoLogin'
 
 export const fetch = app.fetch

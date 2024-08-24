@@ -1,7 +1,8 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
+import { Env } from '../share'
 
-export const app = new OpenAPIHono()
+export const app = new OpenAPIHono<{ Bindings: Env }>()
 
 app.get(
 	'/swagger',
