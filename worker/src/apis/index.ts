@@ -13,7 +13,18 @@ app.doc('/doc', {
 		title: 'Workerrr API',
 		version: 'v1'
 	},
-	openapi: '3.1.0'
+	openapi: '3.1.0',
+	security: [
+		{
+			Bearer: []
+		}
+	]
+})
+
+app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
+	type: 'http',
+	scheme: 'bearer',
+	bearerFormat: 'JWT'
 })
 
 import './apis/v1/member/post/ssoLogin'
