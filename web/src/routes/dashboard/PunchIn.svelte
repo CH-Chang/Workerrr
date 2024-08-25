@@ -329,25 +329,27 @@
 
 									<p class="flex items-center ml-2">更改密碼</p>
 								</DropdownMenu.Item>
-								<DropdownMenu.Item
-									class="flex flex-row h-10 select-none items-center justify-start rounded-button py-3 pl-3 pr-1.5 text-sm hover:bg-zinc-300 active:bg-zinc-400 transition-all cursor-pointer"
-									on:click={() => handleCancelClick(punchIn.punchInId)}
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 24 24"
-										fill="currentColor"
-										class="size-4"
+								{#if punchIn.punchInStatus === ''}
+									<DropdownMenu.Item
+										class="flex flex-row h-10 select-none items-center justify-start rounded-button py-3 pl-3 pr-1.5 text-sm hover:bg-zinc-300 active:bg-zinc-400 transition-all cursor-pointer"
+										on:click={() => handleCancelClick(punchIn.punchInId)}
 									>
-										<path
-											fill-rule="evenodd"
-											d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
-											clip-rule="evenodd"
-										/>
-									</svg>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 24 24"
+											fill="currentColor"
+											class="size-4"
+										>
+											<path
+												fill-rule="evenodd"
+												d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+												clip-rule="evenodd"
+											/>
+										</svg>
 
-									<p class="flex items-center ml-2">取消執行</p>
-								</DropdownMenu.Item>
+										<p class="flex items-center ml-2">取消執行</p>
+									</DropdownMenu.Item>
+								{/if}
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					</div>
