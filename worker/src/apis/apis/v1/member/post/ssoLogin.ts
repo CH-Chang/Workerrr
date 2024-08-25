@@ -1,6 +1,7 @@
 import { createRoute, z } from '@hono/zod-openapi'
 import { sign } from '../../../../utils/jwt'
 import { app } from '../../../../app'
+import { cors } from '../../../../middlewares/cors'
 
 interface SSOLoginRequest {
 	type: string
@@ -9,7 +10,7 @@ interface SSOLoginRequest {
 
 app.openapi(
 	createRoute({
-		middleware: [],
+		middleware: [cors],
 		method: 'post',
 		path: '/api/v1/member/ssoLogin',
 		request: {

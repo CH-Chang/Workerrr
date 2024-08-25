@@ -1,6 +1,7 @@
 import { createRoute, z } from '@hono/zod-openapi'
 import { app } from '../../../../app'
 import { authentication } from '../../../../middlewares/authorization'
+import { cors } from '../../../../middlewares/cors'
 
 interface PunchInLogRow {
 	punchInLogId: number
@@ -13,7 +14,7 @@ interface PunchInLogRow {
 
 app.openapi(
 	createRoute({
-		middleware: [authentication],
+		middleware: [cors, authentication],
 		method: 'get',
 		path: '/api/v1/punchIn/log',
 		request: {

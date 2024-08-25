@@ -1,6 +1,7 @@
 import { createRoute, z } from '@hono/zod-openapi'
 import { app } from '../../../../app'
 import { authentication } from '../../../../middlewares/authorization'
+import { cors } from '../../../../middlewares/cors'
 import dayjs from 'dayjs'
 
 interface PunchInCancelRequest {
@@ -10,7 +11,7 @@ interface PunchInCancelRequest {
 
 app.openapi(
 	createRoute({
-		middleware: [authentication],
+		middleware: [cors, authentication],
 		method: 'put',
 		path: '/api/v1/punchIn/cancel',
 		request: {
