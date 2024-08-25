@@ -83,7 +83,7 @@ app.openapi(
 			message: '不支援的 SSO 登入模式'
 		}, 400)
 
-		const userId = await c.env.DB.prepare(`
+		const user = await c.env.DB.prepare(`
 			SELECT U.user_id AS userId
 			FROM   TB_SCHEDULE S
 				LEFT JOIN TB_PUNCH_IN P
@@ -93,13 +93,14 @@ app.openapi(
 			WHERE  S.schedule_token = ?1
 				AND S.schedule_expiration_datetime > Datetime('now', 'localtime')`)
 			.bind(token)
-			.first<number>()
+			.first<{ userId: number }>()
 
-		if (userId === null) return c.json({
+		if (user === null) return c.json({
 			code: 1,
 			message: '查無用戶資訊'
 		}, 400)
 
+		const { userId } = user
 		const jwtToken = await sign(c.env, userId)
 
 		return c.json({
