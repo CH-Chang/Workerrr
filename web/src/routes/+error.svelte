@@ -7,7 +7,7 @@
     const loaded = writable(false)
 
     onMount(() => {
-        if ($page.status === 404) goto('/error/404')
+        if ($page.status === 404) goto('/404')
         loaded.set(true)
     })
 </script>

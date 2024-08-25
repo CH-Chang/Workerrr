@@ -12,7 +12,7 @@
     onMount(async () => {
 		const token = $page.url.searchParams.get('token')
 		if (token === null) {
-            goto('/error/404')
+            goto('/404')
             return
         }
 
@@ -25,7 +25,7 @@
 
             const { code, message, data } = ssoLoginResponse.data
             if (code !== 0) {
-                messageBoxStore.push('提示訊息', message, [{ text: '確認', callback: () => { goto('/error/404') } }])
+                messageBoxStore.push('提示訊息', message, [{ text: '確認', callback: () => { goto('/404') } }])
                 return
             }
 
@@ -37,18 +37,18 @@
             if (isAxiosError<SSOLoginResponse>(e)) {
                 const ssoLoginResponse = e.response
                 if (typeof ssoLoginResponse === 'undefined') {
-                    messageBoxStore.push('提示訊息', '發生未知錯誤', [{ text: '確認', callback: () => { goto('/error/404') } }])
+                    messageBoxStore.push('提示訊息', '發生未知錯誤', [{ text: '確認', callback: () => { goto('/404') } }])
                     return
                 }
 
                 const { code, message } = ssoLoginResponse.data
                 if (code !== 0) {
-                    messageBoxStore.push('提示訊息', message, [{ text: '確認', callback: () => { goto('/error/404') } }])
+                    messageBoxStore.push('提示訊息', message, [{ text: '確認', callback: () => { goto('/404') } }])
                     return
                 }
             }
 
-            goto('/error/404')
+            goto('/404')
             return
         }
     }
