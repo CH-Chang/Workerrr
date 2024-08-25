@@ -36,9 +36,6 @@ const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 
 	const token = nanoid()
 
-	const contentObject = { punchInId }
-	const content = JSON.stringify(contentObject)
-
 	const expiration = dayjs().add(5, 'hours').format('YYYY-MM-DD HH:mm:ss')
 
 	await env.DB
@@ -52,7 +49,7 @@ const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 						?3)`)
 		.bind(
 			token,
-			content,
+			punchInId,
 			expiration
 		)
 		.run()
