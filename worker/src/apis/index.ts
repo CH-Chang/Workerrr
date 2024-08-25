@@ -1,5 +1,6 @@
 import { app } from './app'
 import { swaggerUI } from '@hono/swagger-ui'
+import { cors } from './middlewares/cors'
 
 app.get(
 	'/swagger',
@@ -26,6 +27,8 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 	scheme: 'bearer',
 	bearerFormat: 'JWT'
 })
+
+app.use('/api/v1/*', cors)
 
 import './apis/v1/member/post/ssoLogin'
 import './apis/v1/member/get/user'
