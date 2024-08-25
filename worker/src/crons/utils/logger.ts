@@ -9,6 +9,10 @@ export const cleanup = async (env: Env): Promise<void> => {
 	await env.DB
 		.prepare("DELETE FROM TB_EMAIL_LOG WHERE datetime < DATETIME('now', '-7 day', 'localtime')")
 		.run()
+
+	await env.DB
+		.prepare("DELETE FROM TB_SCHEDULE WHERE schedule_expiration_datetime < DATETIME('now', '-7 day', 'localtime')")
+		.run()
 }
 
 export const logPunchIn = async (env: Env, status: boolean, id: number, memo: string): Promise<void> => {
