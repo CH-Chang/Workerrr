@@ -1,7 +1,9 @@
 import axios from 'axios'
+import urlJoin from 'url-join'
+import { PUBLIC_BASE_URL } from '$env/static/public'
 
 const instance = axios.create({
-    baseURL: '/api/v1',
+    baseURL: urlJoin(PUBLIC_BASE_URL, '/api/v1'),
     withCredentials: true
 })
 
