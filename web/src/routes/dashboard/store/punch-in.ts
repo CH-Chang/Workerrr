@@ -14,10 +14,12 @@ export interface PunchIn {
 }
 
 export interface PunchInState {
+    loading: boolean
     punchIns: PunchIn[]
 }
 
 const initState: PunchInState = {
+    loading: true,
     punchIns: []
 }
 
@@ -59,6 +61,8 @@ export function createPunchInStore() {
             const messageBoxStore = createMessageBoxStore()
 
             try {
+                store.update(s => ({ ...s, loading: true }))
+
                 const response = await getPunchIns()
                 const { code, data } = response.data
                 if (code === 0) {
@@ -77,6 +81,8 @@ export function createPunchInStore() {
                         }
                     }
                 }
+            } finally {
+                store.update(s => ({ ...s, loading: false }))
             }
 
             messageBoxStore.push('提示訊息', '取得打卡資料發生未知錯誤', [{ text: '確認' }])

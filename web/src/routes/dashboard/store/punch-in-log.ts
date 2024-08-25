@@ -14,12 +14,14 @@ export interface PunchInLog {
 }
 
 export interface PunchInLogState {
+    loading: boolean
     count: number
     pageCount: number
     punchInLogs: PunchInLog[]
 }
 
 const initState: PunchInLogState = {
+    loading: true,
     count: 0,
     pageCount: 5,
     punchInLogs: []
@@ -34,6 +36,8 @@ export function createPunchInLogStore() {
             const messageBoxStore = createMessageBoxStore()
 
             try {
+                store.update(s => ({ ...s, loading: true }))
+
                 const response = await getPunchInLogs(page, pageCount)
                 const { code, data } = response.data
                 if (code === 0) {
@@ -52,6 +56,8 @@ export function createPunchInLogStore() {
                         }
                     }
                 }
+            } finally {
+                store.update(s => ({ ...s, loading: false }))
             }
 
             messageBoxStore.push('提示訊息', '取得打卡紀錄資料發生未知錯誤', [{ text: '確認' }])
