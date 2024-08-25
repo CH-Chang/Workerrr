@@ -11,6 +11,7 @@ export interface PunchIn {
 	punchInAccount: string
 	punchInEnable: string
 	punchInManualType: string
+    punchInStatus: string
 }
 
 export interface PunchInState {

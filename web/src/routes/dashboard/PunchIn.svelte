@@ -148,7 +148,7 @@
 					<div class="px-2 py-2 flex flex-row justify-center items-center bg-zinc-200 rounded-lg">
 						<Tooltip.Root openDelay={0}>
 							<Tooltip.Trigger class="flex flex-row items-center justify-center gap-1">
-								{#if punchIn.punchInEnable === 'Y' && punchIn.punchInManualType === ''}
+								{#if punchIn.punchInEnable === 'Y' && punchIn.punchInManualType === '' && punchIn.punchInStatus === ''}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
@@ -164,6 +164,38 @@
 										/>
 									</svg>
 									<p class="text-stone-800 text-sm ml-1">等待中</p>
+								{:else if punchIn.punchInEnable === 'Y' && punchIn.punchInManualType === '' && punchIn.punchInStatus === 'Success'}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="size-4"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+										/>
+									</svg>
+									<p class="text-stone-800 text-sm ml-1">已成功</p>
+								{:else if punchIn.punchInEnable === 'Y' && punchIn.punchInManualType === '' && punchIn.punchInStatus === 'Failed'}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="size-4"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+										/>
+									</svg>
+									<p class="text-stone-800 text-sm ml-1">已失敗</p>
 								{:else if punchIn.punchInEnable === 'Y' && punchIn.punchInManualType === 'Cancel'}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"

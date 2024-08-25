@@ -59,7 +59,7 @@
 				<Collapsible.Root class="w-full py-2">
 					<div class="flex items-center justify-between">
 						<div class="flex-1">
-							<h4 class="text-sm text-zinc-200">2024-08-21</h4>
+							<h4 class="text-sm text-zinc-200">{punchInLog.punchInDatetime}</h4>
 						</div>
 						<Collapsible.Trigger>
 							<svg

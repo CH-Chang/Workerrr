@@ -8,6 +8,7 @@ export interface GetPunchInsResponse extends Response {
             punchInAccount: string
             punchInEnable: string
             punchInManualType: string
+            punchInStatus: string
         }>
     }
 }

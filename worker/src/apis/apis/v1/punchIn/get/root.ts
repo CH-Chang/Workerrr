@@ -9,6 +9,7 @@ interface PunchInRow {
 	punchInAccount: string
 	punchInEnable: string
 	punchInManualType: string
+	punchInStatus: string
 }
 
 app.openapi(
@@ -30,7 +31,8 @@ app.openapi(
 									punchInType: z.string(),
 									punchInAccount: z.string(),
 									punchInEnable: z.string(),
-									punchInManualType: z.string()
+									punchInManualType: z.string(),
+									punchInStatus: z.string()
 								}))
 							})
 						})
@@ -77,16 +79,21 @@ app.openapi(
 
 		const { success: punchInSuccess, results: punchIns } = await c.env.DB
 			.prepare(`
-				SELECT  P.punch_in_id                      AS punchInId,
-						P.punch_in_type                    AS punchInType,
-						P.punch_in_account                 AS punchInAccount,
-						P.punch_in_enable                  AS punchInEnable,
-						Ifnull(M.punch_in_manual_type, '') AS punchInManualType
-					FROM   TB_PUNCH_IN P
-						LEFT JOIN TB_PUNCH_IN_MANUAL M
-								ON P.punch_in_id = M.punch_in_id
-									AND M.punch_in_manual_date = Date('now', 'localtime')
-					WHERE  P.user_id = ?1  `)
+				SELECT P.punch_in_id                      AS punchInId,
+					P.punch_in_type                    AS punchInType,
+					P.punch_in_account                 AS punchInAccount,
+					P.punch_in_enable                  AS punchInEnable,
+					Ifnull(M.punch_in_manual_type, '') AS punchInManualType,
+					Ifnull(L.punch_in_status, '')      AS punchInStatus
+				FROM   TB_PUNCH_IN P
+					LEFT JOIN TB_PUNCH_IN_MANUAL M
+							ON P.punch_in_id = M.punch_in_id
+								AND M.punch_in_manual_date = Date('now', 'localtime')
+					LEFT JOIN TB_PUNCH_IN_LOG L
+							ON P.punch_in_id = L.punch_in_id
+								AND Substr(L.punch_in_datetime, 0, 11) =
+									Date('now', 'localtime')
+				WHERE  P.user_id = ?1  `)
 				.bind(userId)
 				.all<PunchInRow>()
 
