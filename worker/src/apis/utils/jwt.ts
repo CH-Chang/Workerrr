@@ -19,8 +19,8 @@ export const verify = async (env: Env, jwtToken: string): Promise<number | null>
 	const verified = jwt.verify(jwtToken, secret)
 	if (!verified) return null
 
-	const data = jwt.decode<{ userId: number }>(jwtToken)
-	const userId = data.payload?.userId
+	const data = jwt.decode<{ userId: { userId: number } }>(jwtToken)
+	const userId = data.payload?.userId.userId
 	if (typeof userId === 'undefined') return null
 
 	return userId

@@ -34,6 +34,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"bits-ui": "^0.21.13"
+		"axios": "^1.7.5",
+		"bits-ui": "^0.21.13",
+		"dayjs": "^1.11.13"
 	}
 }

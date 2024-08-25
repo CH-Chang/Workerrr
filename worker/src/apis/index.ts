@@ -28,7 +28,9 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 })
 
 import './apis/v1/member/post/ssoLogin'
+import './apis/v1/member/get/user'
 import './apis/v1/punchIn/get/log'
 import './apis/v1/punchIn/get/root'
+import './apis/v1/punchIn/put/cancel'
 
 export const fetch = app.fetch
