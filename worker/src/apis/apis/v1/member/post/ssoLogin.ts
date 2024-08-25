@@ -91,7 +91,7 @@ app.openapi(
 				LEFT JOIN TB_USER U
 						ON P.user_id = U.user_id
 			WHERE  S.schedule_token = ?1
-				AND S.schedule_expiration_datetime < Datetime('now', 'localtime')`)
+				AND S.schedule_expiration_datetime > Datetime('now', 'localtime')`)
 			.bind(token)
 			.first<number>()
 
