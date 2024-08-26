@@ -20,7 +20,7 @@
 			class="fixed z-50 inset-0 bg-black/60"
 		/>
 		<AlertDialog.Content
-			class="flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50 min-w-[30%] min-h-[20%] bg-slate-200 px-8 py-6 rounded-2xl"
+			class="flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50 min-w-[80%] min-h-[20%] md:min-w-[30%] bg-slate-200 px-8 py-6 rounded-2xl"
 		>
 			<div class="flex flex-col">
 				<AlertDialog.Title class="text-lg font-medium font-noto"

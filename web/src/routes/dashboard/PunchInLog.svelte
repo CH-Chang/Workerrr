@@ -98,7 +98,7 @@
 						<div class="flex flex-row w-full items-center">
 							<div class="flex-1">
 								<p class="text-stone-800 text-sm">
-									打卡狀態 - {punchInLog.punchInStatus === 'Y' ? '已成功' : '未成功'}
+									打卡狀態 - {punchInLog.punchInStatus === 'Success' ? '已成功' : '未成功'}
 								</p>
 							</div>
 							<div class="flex-1">

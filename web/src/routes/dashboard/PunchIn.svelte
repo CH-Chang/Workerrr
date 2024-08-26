@@ -329,7 +329,7 @@
 
 									<p class="flex items-center ml-2">更改密碼</p>
 								</DropdownMenu.Item>
-								{#if punchIn.punchInStatus === ''}
+								{#if punchIn.punchInStatus === '' && punchIn.punchInManualType === ''}
 									<DropdownMenu.Item
 										class="flex flex-row h-10 select-none items-center justify-start rounded-button py-3 pl-3 pr-1.5 text-sm hover:bg-zinc-300 active:bg-zinc-400 transition-all cursor-pointer"
 										on:click={() => handleCancelClick(punchIn.punchInId)}
