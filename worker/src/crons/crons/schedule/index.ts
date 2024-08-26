@@ -36,7 +36,7 @@ const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 
 	const token = nanoid()
 
-	const expiration = dayjs().add(5, 'hours').format('YYYY-MM-DD HH:mm:ss')
+	const expiration = dayjs().add(7, 'hours').format('YYYY-MM-DD HH:mm:ss')
 
 	await env.DB
 		.prepare(`
