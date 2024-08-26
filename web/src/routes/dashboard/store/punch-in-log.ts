@@ -3,6 +3,8 @@ import { getPunchInLogs } from '$lib/apis/v1/punchIn'
 import { isAxiosError } from 'axios'
 import { writable } from 'svelte/store'
 import { createMessageBoxStore } from '$lib/components/message-box/store'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
 export interface PunchInLog {
     punchInLogId: number
@@ -42,7 +44,15 @@ export function createPunchInLogStore() {
                 const { code, data } = response.data
                 if (code === 0) {
                     const { count, punchInLogs } = data
-                    store.update(s => ({ ...s, count, punchInLogs }))
+
+                    dayjs.extend(utc)
+
+                    const localPunchInLogs = punchInLogs.map(punchInLog => ({
+                        ...punchInLog,
+                        punchInDatetime: dayjs.utc(punchInLog.punchInDatetime, 'YYYY-MM-DD HH:mm:ss', true).local().format('YYYY-MM-DD HH:mm:ss')
+                    }))
+
+                    store.update(s => ({ ...s, count, punchInLogs: localPunchInLogs }))
                     return
                 }
             } catch (e) {
