@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 export const cleanup = async (env: Env): Promise<void> => {
 	await env.DB
-		.prepare("DELETE FROM TB_PUNCH_IN_LOG WHERE punch_in_datetime < DATETIME('now', '-7 day', 'localtime')")
+		.prepare("DELETE FROM TB_PUNCH_IN_LOG WHERE punch_in_datetime < DATETIME('now', '-30 day', 'localtime')")
 		.run()
 
 	await env.DB
@@ -11,7 +11,7 @@ export const cleanup = async (env: Env): Promise<void> => {
 		.run()
 
 	await env.DB
-		.prepare("DELETE FROM TB_SCHEDULE WHERE schedule_expiration_datetime < DATETIME('now', '-7 day', 'localtime')")
+		.prepare("DELETE FROM TB_SCHEDULE WHERE schedule_expiration_datetime < DATETIME('now', 'localtime')")
 		.run()
 }
 
