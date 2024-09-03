@@ -35,5 +35,6 @@ import './apis/v1/member/get/user'
 import './apis/v1/punchIn/get/log'
 import './apis/v1/punchIn/get/root'
 import './apis/v1/punchIn/put/cancel'
+import './apis/v1/punchIn/put/password'
 
 export const fetch = app.fetch
