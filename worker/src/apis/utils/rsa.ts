@@ -1,4 +1,8 @@
-export const decrypt = async (cipherText: string, privateKey: string) => {
+import { Env } from '../../share'
+
+export const decrypt = async (env: Env, cipherText: string) => {
+	const privateKey = await env.KV.get('RSA_PRIVATE_KEY') as string
+
 	const cipherBuffer = Uint8Array.from(atob(cipherText), c => c.charCodeAt(0))
 	const privateKeyBuffer = Uint8Array.from(atob(privateKey), c => c.charCodeAt(0))
 
