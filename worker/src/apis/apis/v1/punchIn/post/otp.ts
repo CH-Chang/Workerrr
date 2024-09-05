@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid'
 import { app } from '../../../../app'
 import { authentication } from '../../../../middlewares/authorization'
 import { cors } from '../../../../middlewares/cors'
+import { mailPunchInOtp } from '../../../../../share/utils/mailer'
 import dayjs from 'dayjs'
 
 interface PunchInOtpRequest {
@@ -81,6 +82,19 @@ app.openapi(
 
 		const { punchInId } = await c.req.json<PunchInOtpRequest>()
 
+		const { email } = await c.env.DB
+			.prepare(`
+				SELECT email
+				FROM   TB_USER
+				WHERE  user_id = ?1 `)
+			.bind(userId)
+			.first<{ email: string }>() ?? { email: '' }
+
+		if (email === '') return c.json({
+			code: 1,
+			message: '查無指定帳戶信箱資訊'
+		}, 400)
+
 		const otp = Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
 		const otpKey = nanoid()
 		const otpExpiration = dayjs().add(5, 'minutes').format('YYYY-MM-DD HH:mm:ss')
@@ -107,6 +121,8 @@ app.openapi(
 							?7); `)
 			.bind(userId, otpKey, otp, otpType, otpPropose, otpArgument, otpExpiration)
 			.run()
+
+		await mailPunchInOtp(c.env, email, otp)
 
 		return c.json({
 			code: 0,
