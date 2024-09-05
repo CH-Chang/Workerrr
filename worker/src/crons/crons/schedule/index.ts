@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { type Env } from '../../../share'
 import { type CronTask } from '../../share'
 import { nanoid } from 'nanoid'
-import { mailSchedule } from '../../utils/mailer'
+import { mailSchedule } from '../../../share/utils/mailer'
 import pLimit from 'p-limit'
 import qs from 'qs'
 

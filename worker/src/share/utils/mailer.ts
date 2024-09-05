@@ -2,7 +2,8 @@ import { type Env } from '../../share'
 import { Resend } from 'resend'
 import { render as renderPunchIn } from '../template/punchIn'
 import { render as renderSchedule } from '../template/schedule'
-import { logEmail } from '../../share/utils/logger'
+import { render as renderPunchInOtp } from '../template/punchInOtp'
+import { logEmail } from './logger'
 import AsyncLock from 'async-lock'
 
 const locker = new AsyncLock()
@@ -31,6 +32,15 @@ const send = async (env: Env, email: string, subject: string, content: string): 
 			timeout: 0
 		}
 	)
+}
+
+export const mailPunchInOtp = async (env: Env, email: string, otp: string): Promise<void> => {
+	const subject = '打工人系統通知'
+	const content = renderPunchInOtp({
+		otp
+	})
+
+	await send(env, email, subject, content)
 }
 
 export const mailSchedule = async (env: Env, email: string, account: string, type: string, url: string): Promise<void> => {
