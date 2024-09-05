@@ -2,7 +2,7 @@ import { type Env } from '../../share'
 import { Resend } from 'resend'
 import { render as renderPunchIn } from '../template/punchIn'
 import { render as renderSchedule } from '../template/schedule'
-import { logEmail } from './logger'
+import { logEmail } from '../../share/utils/logger'
 import AsyncLock from 'async-lock'
 
 const locker = new AsyncLock()

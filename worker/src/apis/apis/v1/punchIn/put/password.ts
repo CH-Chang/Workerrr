@@ -2,7 +2,7 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { app } from '../../../../app'
 import { authentication } from '../../../../middlewares/authorization'
 import { cors } from '../../../../middlewares/cors'
-import { encrypt as aesEncrypt, decrypt as aesDecrypt } from '../../../../utils/aes'
+import { encrypt as aesEncrypt, decrypt as aesDecrypt } from '../../../../../share/utils/aes'
 import { decrypt as rsaDecrypt } from '../../../../utils/rsa'
 
 interface PunchInPasswordRequest {
