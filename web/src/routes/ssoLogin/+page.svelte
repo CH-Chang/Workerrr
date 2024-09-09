@@ -12,7 +12,7 @@
 	onMount(async () => {
 		const token = $page.url.searchParams.get('token');
 		if (token === null) {
-			// goto('/404')
+			goto('/404')
 			return;
 		}
 
