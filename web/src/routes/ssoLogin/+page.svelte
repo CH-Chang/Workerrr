@@ -12,7 +12,7 @@
 	onMount(async () => {
 		const token = $page.url.searchParams.get('token');
 		if (token === null) {
-			goto('/404')
+			// goto('/404')
 			return;
 		}
 
@@ -76,7 +76,7 @@
 </script>
 
 <div class="w-screen h-screen flex flex-row items-center justify-center bg-zinc-200">
-	<div class="flex flex-col items-center justify-center bg-stone-800 rounded-xl px-8 py-8">
+	<div class="flex flex-col items-center justify-center bg-stone-800 rounded-xl px-6 py-6">
 		<div>
 			<svg
 				aria-hidden="true"
