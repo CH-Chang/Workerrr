@@ -76,6 +76,17 @@ app.openapi(
 						})
 					}
 				}
+			},
+			500: {
+				description: '伺服器錯誤',
+				content: {
+					'application/json': {
+						schema: z.object({
+							code: z.number(),
+							message: z.string()
+						})
+					}
+				}
 			}
 		}
 	}),
@@ -130,13 +141,18 @@ app.openapi(
 		const decryptedNewPassword = await rsaDecrypt(c.env, newPassword)
 		const encryptedRecordNewPassword = await aesEncrypt(c.env, decryptedNewPassword)
 
-		await c.env.DB
+		const { success: updateSuccess } = await c.env.DB
 			.prepare(`
 				UPDATE TB_PUNCH_IN
 				SET    punch_in_password = ?1
 				WHERE  punch_in_id = ?2`)
 			.bind(encryptedRecordNewPassword, punchInId)
 			.run()
+
+		if (!updateSuccess) return c.json({
+			code: 1,
+			message: '更新打卡密碼失敗'
+		}, 500)
 
 		return c.json({
 			code: 0,
