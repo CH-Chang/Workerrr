@@ -7,7 +7,8 @@ import { decrypt as rsaDecrypt } from '../../../../utils/rsa'
 
 interface PunchInPasswordRequest {
 	punchInId: number
-	password: string
+	otpKey: string
+	otp: string
 	newPassword: string
 }
 
@@ -23,7 +24,8 @@ app.openapi(
 					'application/json': {
 						schema: z.object({
 							punchInId: z.number(),
-							password: z.string(),
+							otpKey: z.string(),
+							otp: z.string(),
 							newPassword: z.string()
 						})
 					}
@@ -80,29 +82,50 @@ app.openapi(
 	async (c) => {
 		const userId = c.get('userId')
 
-		const { punchInId, password, newPassword } = await c.req.json<PunchInPasswordRequest>()
+		const { punchInId, newPassword, otp, otpKey } = await c.req.json<PunchInPasswordRequest>()
 
-		const recordPasswords = await c.env.DB
+		const record = await c.env.DB
 			.prepare(`
-				SELECT punch_in_password AS punchInPassword
+				SELECT COUNT(*) AS count
 				FROM   TB_PUNCH_IN
 				WHERE  punch_in_id = ?1
 					AND user_id = ?2 `)
 			.bind(punchInId, userId)
-			.first<{ punchInPassword: string }>() ?? { punchInPassword: '' }
+			.first<{ count: number }>() ?? { count: 0 }
 
-		const recordPassword = recordPasswords.punchInPassword
-		if (recordPassword === '') return c.json({
+		const recordCount = record.count
+		if (recordCount <= 0) return c.json({
 			code: 1,
 			message: '查無打卡項目資料'
 		}, 400)
 
-		const decryptedPassword = await rsaDecrypt(c.env, password)
-		const decryptedRecordPassword = await aesDecrypt(c.env, recordPassword)
-		if (decryptedPassword !== decryptedRecordPassword) return c.json({
+		const otpRecord = await c.env.DB
+			.prepare(`
+				SELECT otp_argument AS otpArgument,
+					   otp          AS otp
+				FROM   TB_OTP
+				WHERE  otp_key = ?1
+					AND otp_purpose = ?2
+					AND user_id = ?3
+					AND otp_expiration_datetime < DATETIME('now') `)
+			.bind(otpKey, 'punchIn', userId)
+			.first<{ otpArgument: string, otp: string }>()
+
+		if (otpRecord === null) return c.json({
 			code: 1,
-			message: '舊密碼不符'
-		}, 200)
+			message: '無效的一次性密碼'
+		}, 400)
+
+		const parsedOtpArgument = JSON.parse(otpRecord.otpArgument) as { punchInId: number }
+		if (parsedOtpArgument.punchInId !== punchInId) return c.json({
+			code: 1,
+			message: '無效的一次性密碼'
+		}, 400)
+
+		if (otp !== otpRecord.otp) return c.json({
+			code: 1,
+			message: '錯誤的一次性密碼'
+		}, 400)
 
 		const decryptedNewPassword = await rsaDecrypt(c.env, newPassword)
 		const encryptedRecordNewPassword = await aesEncrypt(c.env, decryptedNewPassword)
