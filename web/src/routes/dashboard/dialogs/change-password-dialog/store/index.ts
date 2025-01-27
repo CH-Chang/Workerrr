@@ -28,6 +28,8 @@ export function createChangePasswordDialogStore() {
     return {
         subscribe: store.subscribe,
         show: (punchInId: number) => store.update(s => ({ ...s, punchInId, show: true })),
+        hide: () => store.update(s => ({ ...s, show: false })),
+        reset: () => store.update(s => ({ ...s, ...initState })),
         applyOtp: async () => {
             store.update(s => ({ ...s, otpLock: true, otpApplyTime: dayjs().unix() }))
         }

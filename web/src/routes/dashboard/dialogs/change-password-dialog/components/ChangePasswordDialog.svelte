@@ -8,7 +8,13 @@
 	const state = createChangePasswordDialogStore();
 	const messageBoxStore = createMessageBoxStore();
 
-	const onConfirmClicked = () => {};
+	const onConfirmClicked = () => {
+        state.reset();
+    };
+
+    const onCancelClicked = () => {
+        state.reset();
+    };
 
 	const onApplyOtpClicked = async () => {
 		if ($state.oldPassword.length === 0) {
@@ -100,11 +106,12 @@
 				>
 					確認更改
 				</Button.Root>
-				<Dialog.Close
+				<Button.Root
+                    on:click={onCancelClicked}
 					class="inline-flex w-full items-center justify-center text-base font-normal font-noto border-2 border-stone-800 text-stone-800 rounded-xl py-1 transition-all hover:bg-stone-800 hover:text-slate-200"
 				>
 					取消更改
-				</Dialog.Close>
+				</Button.Root>
 			</div>
 		</Dialog.Content>
 	</Dialog.Portal>
