@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { Tooltip, DropdownMenu } from 'bits-ui';
 	import { createMessageBoxStore } from '$lib/components/message-box/store';
+	import { createChangePasswordDialogStore } from './dialogs/change-password-dialog/store';
 	import { createPunchInStore } from './store/punch-in';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import ChangePasswordDialog from './dialogs/change-password-dialog/components/ChangePasswordDialog.svelte';
 	import dayjs from 'dayjs';
 
 	const messageBoxStore = createMessageBoxStore();
 	const punchInStore = createPunchInStore();
+	const changePasswordDialogStore = createChangePasswordDialogStore();
 
 	onMount(async () => {
 		await punchInStore.queryPunchIns();
@@ -46,11 +49,7 @@
 	};
 
 	const handleChangePasswordClick = (punchInId: number) => {
-		messageBoxStore.push('提示訊息', '打工人開發中，敬請期待！', [
-			{
-				text: '確認'
-			}
-		]);
+		changePasswordDialogStore.show(punchInId);
 	};
 
 	const handleCancelConfirmClick = async (punchInId: number) => {
@@ -356,5 +355,8 @@
 				</div>
 			{/each}
 		{/if}
+	</div>
+	<div>
+		<ChangePasswordDialog />
 	</div>
 </div>
