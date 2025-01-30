@@ -3,12 +3,37 @@
 	import { fade } from 'svelte/transition';
 	import { createChangePasswordDialogStore } from '../store/';
 	import { createMessageBoxStore } from '$lib/components/message-box/store/';
-	import dayjs from 'dayjs';
-
 	const state = createChangePasswordDialogStore();
 	const messageBoxStore = createMessageBoxStore();
 
-	const onConfirmClicked = () => {
+	const onConfirmClicked = async () => {
+		if ($state.otpKey.length <= 0) {
+			messageBoxStore.push('提示', '請申請 Email 一次性密碼', [{ text: '確認' }]);
+			return;
+		}
+
+		if ($state.otp.length <= 0) {
+			messageBoxStore.push('提示', '請輸入 Email 一次性密碼', [{ text: '確認' }]);
+			return;
+		}
+
+		if ($state.newPassword.length <= 0) {
+			messageBoxStore.push('提示', '請輸入新打卡密碼', [{ text: '確認' }]);
+			return;
+		}
+
+		if ($state.newPasswordCheck.length <= 0) {
+			messageBoxStore.push('提示', '請再次輸入新打卡密碼', [{ text: '確認' }]);
+			return;
+		}
+
+		if ($state.newPassword !== $state.newPasswordCheck) {
+			messageBoxStore.push('提示', '請確認兩次輸入的新打卡密碼不相同', [{ text: '確認' }]);
+			return;
+		}
+
+		await state.changePassword(); 
+
         state.reset();
     };
 
@@ -17,11 +42,6 @@
     };
 
 	const onApplyOtpClicked = async () => {
-		if ($state.oldPassword.length === 0) {
-			messageBoxStore.push('提示', '請輸入舊密碼', [{ text: '確認' }]);
-			return;
-		}
-
 		if ($state.otpLock) {
 			messageBoxStore.push('提示', '請勿頻繁申請 Email 一次性密碼', [{ text: '確認' }]);
 			return;
@@ -36,7 +56,7 @@
 		<Dialog.Overlay
 			transition={fade}
 			transitionConfig={{ duration: 150 }}
-			class="fixed z-45 inset-0 bg-black/60"
+			class="fixed z-5 inset-0 bg-black/60"
 		/>
 		<Dialog.Content
 			class="flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50 min-w-[80%] min-h-[20%] md:min-w-[30%] bg-slate-200 px-8 py-6 rounded-2xl"
@@ -46,21 +66,8 @@
 			</div>
 			<div class="flex-1 flex flex-col">
 				<Dialog.Description class="text-xs font-normal font-noto">
-					請輸入原打卡登入密碼，並通過 Email OTP 驗證後，進行新打卡登入密碼之變更。
+					請通過 Email OTP 驗證及舊打卡登入密碼驗證後，進行新打卡登入密碼之變更。
 				</Dialog.Description>
-			</div>
-			<div class="flex flex-col items-start gap-1 mt-10">
-				<Label.Root for="oldPassword" class="text-sm font-noto">原打卡密碼</Label.Root>
-				<div class="w-full">
-					<input
-						id="oldPassword"
-						class="w-full font-noto text-base px-2 py-1 rounded-l"
-						placeholder="請輸入原打卡密碼"
-						type="password"
-						autocomplete="off"
-						bind:value={$state.oldPassword}
-					/>
-				</div>
 			</div>
 			<div class="flex flex-col items-start gap-1 mt-2">
 				<Label.Root for="otp" class="text-sm font-noto">Email 一次性密碼</Label.Root>
@@ -69,7 +76,6 @@
 						id="otp"
 						class="font-noto text-base px-2 py-1 rounded-l"
 						placeholder="請輸入 Email 一次性密碼"
-						type="password"
 						autocomplete="off"
 						bind:value={$state.otp}
 					/>
@@ -79,7 +85,7 @@
 						class="inline-flex items-center justify-center text-base font-normal font-noto border-2 border-stone-800 text-stone-800 rounded-xl py-1 px-2 transition-all hover:bg-stone-800 hover:text-slate-200"
 					>
 						{#if $state.otpLock}
-							等待 0 秒後重試
+							等待 {$state.otpCDRemaining.toString().padStart(3, '0')} 秒後重試
 						{:else}
 							申請一次性密碼
 						{/if}
@@ -96,6 +102,19 @@
 						type="password"
 						autocomplete="off"
 						bind:value={$state.newPassword}
+					/>
+				</div>
+			</div>
+			<div class="flex flex-col items-start gap-1 mt-2">
+				<Label.Root for="newPasswordCheck" class="text-sm font-noto">再次確認新打卡密碼</Label.Root>
+				<div class="w-full">
+					<input
+						id="newPasswordCheck"
+						class="w-full font-noto text-base px-2 py-1 rounded-l"
+						placeholder="請再次輸入新打卡密碼"
+						type="password"
+						autocomplete="off"
+						bind:value={$state.newPasswordCheck}
 					/>
 				</div>
 			</div>

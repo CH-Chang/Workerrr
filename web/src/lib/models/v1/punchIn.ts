@@ -26,3 +26,9 @@ export interface GetPunchInLogsResponse extends Response {
         }>
     }
 }
+
+export interface ApplyOtpResponse extends Response {
+    data: {
+        otpKey: string
+    }
+}
