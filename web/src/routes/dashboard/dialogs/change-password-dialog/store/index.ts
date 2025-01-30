@@ -4,6 +4,7 @@ import { createMessageBoxStore } from '$lib/components/message-box/store'
 import { createSpinnerStore } from '$lib/components/spinner/store'
 import { isAxiosError } from 'axios'
 import type { ApplyOtpResponse } from '$lib/models/v1/punchIn'
+import { encrypt } from '$lib/utils/rsa'
 
 export interface ChangePasswordDialogState {
     show: boolean
@@ -41,13 +42,19 @@ export function createChangePasswordDialogStore() {
         changePassword: async () => {
             const { punchInId, otpKey, otp, newPassword } = get(store)
 
-            // TODO: new password rsa encryption
-
             const spinnerStore = createSpinnerStore()
             const messageBoxStore = createMessageBoxStore()
 
+            let cipherNewPassword = ''
             try {
-                const response = await spinnerStore.spinner(async () => await changePassword(punchInId, otpKey, otp, newPassword), '密碼變更中')
+                cipherNewPassword = await encrypt(newPassword)
+            } catch {
+                messageBoxStore.push('提示訊息', '客戶端加密模組執行失敗', [{ text: '確認' }])
+                return
+            }
+
+            try {
+                const response = await spinnerStore.spinner(async () => await changePassword(punchInId, otpKey, otp, cipherNewPassword), '密碼變更中')
                 const { code } = response.data
                 if (code === 0) {
                     messageBoxStore.push('提示訊息', '密碼變更成功', [{ text: '確認' }])
@@ -64,10 +71,10 @@ export function createChangePasswordDialogStore() {
                         }
                     }
                 }
-            }
 
-            messageBoxStore.push('提示訊息', '發送 Email 一次性驗證發生未知錯誤', [{ text: '確認' }])
-            return
+                messageBoxStore.push('提示訊息', '密碼變更發生未知錯誤', [{ text: '確認' }])
+                return
+            }
         },
         applyOtp: async () => {
             const { punchInId } = get(store)
