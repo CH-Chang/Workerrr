@@ -7,6 +7,11 @@ node_compat = true
 [triggers]
 crons = ["0 7 * * *", "5 7 * * *", "10 7 * * *", "0 0 * * *"]
 
+[vars]
+CORS_ORIGIN = "https://workerrr-web.0000886.xyz"
+ENABLE_AUTHORIZATION = "true"
+SCHEDULE_BASE_URL = "https://workerrr-web.0000886.xyz/ssoLogin"
+
 [env.staging.vars]
 CORS_ORIGIN = "http://localhost:5173"
 ENABLE_AUTHORIZATION = "true"
