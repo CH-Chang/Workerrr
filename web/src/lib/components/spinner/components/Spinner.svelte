@@ -14,13 +14,13 @@
 			class="fixed z-50 inset-0 bg-black/60"
 		/>
 		<Dialog.Content
-			class="flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50 min-w-md min-h-md bg-slate-200 px-8 py-6 rounded-2xl"
+			class="flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50 min-w-md min-h-md bg-stone-800 px-8 py-6 rounded-2xl"
 		>
 			<div class="flex flex-col items-center justify-center bg-stone-800 rounded-xl px-6 py-6">
 				<div>
 					<svg
 						aria-hidden="true"
-						class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-zinc-200"
+						class="w-8 h-8 text-gray-200 animate-spin fill-zinc-200"
 						viewBox="0 0 100 101"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
