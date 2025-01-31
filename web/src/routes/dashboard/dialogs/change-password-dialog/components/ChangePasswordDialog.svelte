@@ -33,8 +33,6 @@
 		}
 
 		await state.changePassword(); 
-
-        state.reset();
     };
 
     const onCancelClicked = () => {

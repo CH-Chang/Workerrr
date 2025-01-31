@@ -42,6 +42,7 @@ export function createChangePasswordDialogStore() {
         changePassword: async () => {
             const { punchInId, otpKey, otp, newPassword } = get(store)
 
+            const changePasswordDialogStore = createChangePasswordDialogStore()
             const spinnerStore = createSpinnerStore()
             const messageBoxStore = createMessageBoxStore()
 
@@ -57,7 +58,7 @@ export function createChangePasswordDialogStore() {
                 const response = await spinnerStore.spinner(async () => await changePassword(punchInId, otpKey, otp, cipherNewPassword), '密碼變更中')
                 const { code } = response.data
                 if (code === 0) {
-                    messageBoxStore.push('提示訊息', '密碼變更成功', [{ text: '確認' }])
+                    messageBoxStore.push('提示訊息', '密碼變更成功', [{ text: '確認', callback: () => { changePasswordDialogStore.reset() } }])
                     return
                 }
             } catch (e) {
