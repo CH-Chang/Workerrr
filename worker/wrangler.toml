@@ -15,7 +15,7 @@ SCHEDULE_BASE_URL = "http://localhost:5173/ssoLogin"
 [env.production.vars]
 CORS_ORIGIN = "https://workerrr-web.0000886.xyz"
 ENABLE_AUTHORIZATION = "true"
-SCHEDULE_BASE_URL = "	https://workerrr-web.0000886.xyz/ssoLogin"
+SCHEDULE_BASE_URL = "https://workerrr-web.0000886.xyz/ssoLogin"
 
 [[d1_databases]]
 binding = "DB"
