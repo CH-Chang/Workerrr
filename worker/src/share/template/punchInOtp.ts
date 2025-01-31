@@ -131,7 +131,7 @@ const template = `
                                 <tr>
                                     <td class="message-box">
                                         <p>感謝您使用打工人系統服務，</p>
-                                        <p class="message-mt">您申請的打卡帳號密碼變更，，</p>
+                                        <p class="message-mt">您申請的打卡帳號密碼變更，</p>
                                         <p>驗證碼為『{{ otp }}』，</p>
 										<p>請於五分鐘內完成變更程序。</p>
                                         <p class="message-mt">如果您有任何問題，</p>
