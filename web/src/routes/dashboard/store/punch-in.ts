@@ -4,6 +4,7 @@ import { isAxiosError } from 'axios'
 import { writable } from 'svelte/store'
 import { createMessageBoxStore } from '$lib/components/message-box/store'
 import dayjs from 'dayjs'
+import { createSpinnerStore } from '$lib/components/spinner/store'
 
 export interface PunchIn {
     punchInId: number
@@ -31,11 +32,12 @@ export function createPunchInStore() {
         subscribe: store.subscribe,
         cancelPunchIn: async (punchInId: number) => {
             const messageBoxStore = createMessageBoxStore()
+            const spinnerStore = createSpinnerStore()
             const punchInStore = createPunchInStore()
 
             try {
                 const date = dayjs().format('YYYY-MM-DD')
-                const response = await cancelPunchIn(date, punchInId)
+                const response = await spinnerStore.spinner(async () => await cancelPunchIn(date, punchInId), '取消打卡中')
                 const { code } = response.data
                 if (code === 0) {
                     return
