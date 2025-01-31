@@ -1,13 +1,15 @@
-import { RSA_PUBLIC_KEY } from '$env/static/public'
+import { PUBLIC_RSA_PUBLIC_KEY } from '$env/static/public'
 
 export const encrypt = async (plaintext: string) => {
-	const publicKey = RSA_PUBLIC_KEY
+	const publicKey = PUBLIC_RSA_PUBLIC_KEY
 
-	const plainBuffer = Uint8Array.from(atob(plaintext), c => c.charCodeAt(0))
+	const encoder = new TextEncoder()
+    const plainBuffer = encoder.encode(plaintext)
+
 	const publicKeyBuffer = Uint8Array.from(atob(publicKey), c => c.charCodeAt(0))
 
 	const cryptoKey = await crypto.subtle.importKey(
-        'pkcs8',
+        'spki',
         publicKeyBuffer,
         {
             name: 'RSA-OAEP',
@@ -25,8 +27,7 @@ export const encrypt = async (plaintext: string) => {
 		plainBuffer
 	)
 
-	const decoder = new TextDecoder()
-	const cipherText = decoder.decode(cipherBuffer)
+	const cipherText = btoa(String.fromCharCode(...new Uint8Array(cipherBuffer)))
 
 	return cipherText
 }
