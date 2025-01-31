@@ -32,12 +32,12 @@
 			return;
 		}
 
-		await state.changePassword(); 
-    };
+		await state.changePassword();
+	};
 
-    const onCancelClicked = () => {
-        state.reset();
-    };
+	const onCancelClicked = () => {
+		state.reset();
+	};
 
 	const onApplyOtpClicked = async () => {
 		if ($state.otpLock) {
@@ -64,15 +64,15 @@
 			</div>
 			<div class="flex-1 flex flex-col">
 				<Dialog.Description class="text-xs font-normal font-noto">
-					請通過 Email OTP 驗證及舊打卡登入密碼驗證後，進行新打卡登入密碼之變更。
+					請通過 Email OTP 驗證驗證後，進行新打卡登入密碼之變更。
 				</Dialog.Description>
 			</div>
 			<div class="flex flex-col items-start gap-1 mt-2">
 				<Label.Root for="otp" class="text-sm font-noto">Email 一次性密碼</Label.Root>
-				<div class="flex flex-row gap-2 items-center justify-center">
+				<div class="w-full flex flex-col gap-2 items-center justify-center">
 					<input
 						id="otp"
-						class="font-noto text-base px-2 py-1 rounded-l"
+						class="w-full font-noto text-base px-2 py-1 rounded-l"
 						placeholder="請輸入 Email 一次性密碼"
 						autocomplete="off"
 						bind:value={$state.otp}
@@ -80,7 +80,7 @@
 					<Button.Root
 						on:click={onApplyOtpClicked}
 						disabled={$state.otpLock}
-						class="inline-flex items-center justify-center text-base font-normal font-noto border-2 border-stone-800 text-stone-800 rounded-xl py-1 px-2 transition-all hover:bg-stone-800 hover:text-slate-200"
+						class="w-full text-base font-normal font-noto border-2 border-stone-800 text-stone-800 rounded-xl py-1 px-2 transition-all hover:bg-stone-800 hover:text-slate-200"
 					>
 						{#if $state.otpLock}
 							等待 {$state.otpCDRemaining.toString().padStart(3, '0')} 秒後重試
@@ -90,7 +90,7 @@
 					</Button.Root>
 				</div>
 			</div>
-			<div class="flex flex-col items-start gap-1 mt-2">
+			<div class="flex flex-col items-start gap-1">
 				<Label.Root for="newPassword" class="text-sm font-noto">新打卡密碼</Label.Root>
 				<div class="w-full">
 					<input
@@ -103,7 +103,7 @@
 					/>
 				</div>
 			</div>
-			<div class="flex flex-col items-start gap-1 mt-2">
+			<div class="flex flex-col items-start gap-1">
 				<Label.Root for="newPasswordCheck" class="text-sm font-noto">再次確認新打卡密碼</Label.Root>
 				<div class="w-full">
 					<input
@@ -124,7 +124,7 @@
 					確認更改
 				</Button.Root>
 				<Button.Root
-                    on:click={onCancelClicked}
+					on:click={onCancelClicked}
 					class="inline-flex w-full items-center justify-center text-base font-normal font-noto border-2 border-stone-800 text-stone-800 rounded-xl py-1 transition-all hover:bg-stone-800 hover:text-slate-200"
 				>
 					取消更改
