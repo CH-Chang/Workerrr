@@ -3,7 +3,7 @@ import { createMiddleware } from 'hono/factory'
 import { cors as honoCors } from 'hono/cors'
 
 export const cors = createMiddleware<HonoEnv>(async (c, next) => {
-	const corsOrigin = await c.env.KV.get('CORS_ORIGIN') ?? '*'
+	const corsOrigin = c.env.CORS_ORIGIN ?? '*'
 
 	const corsMiddleware = honoCors({
 		origin: corsOrigin,

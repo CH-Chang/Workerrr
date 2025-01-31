@@ -4,8 +4,8 @@ export const decrypt = async (env: Env, cipherText: string): Promise<string> => 
 	const decoder = new TextDecoder()
 	const encoder = new TextEncoder()
 
-	const key = await env.KV.get('SENSITIVE_DATA_KEY') as string
-	const iv = await env.KV.get('SENSITIVE_DATA_IV') as string
+	const key = env.SENSITIVE_DATA_KEY
+	const iv = env.SENSITIVE_DATA_IV
 
 	const keyBuffer = encoder.encode(key)
 	const ivBuffer = encoder.encode(iv)
@@ -34,8 +34,8 @@ export const decrypt = async (env: Env, cipherText: string): Promise<string> => 
 export const encrypt = async (env: Env, plainText: string): Promise<string> => {
 	const encoder = new TextEncoder()
 
-	const key = await env.KV.get('SENSITIVE_DATA_KEY') as string
-	const iv = await env.KV.get('SENSITIVE_DATA_IV') as string
+	const key = env.SENSITIVE_DATA_KEY
+	const iv = env.SENSITIVE_DATA_IV
 
 	const keyBuffer = encoder.encode(key)
 	const ivBuffer = encoder.encode(iv)

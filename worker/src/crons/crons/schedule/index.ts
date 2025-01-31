@@ -54,7 +54,7 @@ const process = async (env: Env, punchIn: PunchInRow): Promise<void> => {
 		)
 		.run()
 
-	const baseUrl = await env.KV.get("SCHEDULE_BASE_URL") as string
+	const baseUrl = env.SCHEDULE_BASE_URL
 	const url = `${baseUrl}?${qs.stringify({ token })}`
 
 	await mailSchedule(env, notifyEmail, punchInAccount, punchInType, url)

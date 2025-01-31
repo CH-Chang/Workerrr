@@ -9,7 +9,7 @@ import AsyncLock from 'async-lock'
 const locker = new AsyncLock()
 
 const send = async (env: Env, email: string, subject: string, content: string): Promise<void> => {
-	const api = await env.KV.get('RESEND_API_KEY') as string
+	const api = env.RESEND_API_KEY
 	const resend = new Resend(api)
 
 	await locker.acquire(

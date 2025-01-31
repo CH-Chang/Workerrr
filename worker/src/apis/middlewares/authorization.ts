@@ -7,7 +7,7 @@ const SKIP_AUTHORIZATION_PATHS = [
 ]
 
 export const authentication = createMiddleware<HonoEnv>(async (c, next) => {
-	const enableAuthorization = await c.env.KV.get('ENABLE_AUTHORIZATION')
+	const enableAuthorization = c.env.ENABLE_AUTHORIZATION
 	if (enableAuthorization !== 'true') {
 		await next()
 		return

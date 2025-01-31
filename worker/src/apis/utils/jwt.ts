@@ -2,7 +2,7 @@ import jwt from '@tsndr/cloudflare-worker-jwt'
 import { Env } from '../../share'
 
 export const sign = async (env: Env, userId: number): Promise<string> => {
-	const secret = await env.KV.get('JWT_SECRET') as string
+	const secret = env.JWT_SECRET
 
 	const jwtToken = await jwt.sign({
 		userId,
@@ -14,7 +14,7 @@ export const sign = async (env: Env, userId: number): Promise<string> => {
 }
 
 export const verify = async (env: Env, jwtToken: string): Promise<number | null> => {
-	const secret = await env.KV.get('JWT_SECRET') as string
+	const secret = env.JWT_SECRET
 
 	const verified = await jwt.verify(jwtToken, secret)
 	if (!verified) return null
