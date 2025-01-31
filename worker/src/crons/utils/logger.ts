@@ -13,6 +13,10 @@ export const cleanup = async (env: Env): Promise<void> => {
 	await env.DB
 		.prepare("DELETE FROM TB_SCHEDULE WHERE schedule_expiration_datetime < DATETIME('now', 'localtime')")
 		.run()
+
+		await env.DB
+		.prepare("DELETE FROM TB_OTP WHERE otp_expiration_datetime < DATETIME('now', 'localtime')")
+		.run()
 }
 
 export const logPunchIn = async (env: Env, status: boolean, id: number, memo: string): Promise<void> => {
