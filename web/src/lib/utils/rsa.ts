@@ -1,5 +1,7 @@
+import { RSA_PUBLIC_KEY } from '$env/static/public'
+
 export const encrypt = async (plaintext: string) => {
-	const publicKey = ''
+	const publicKey = RSA_PUBLIC_KEY
 
 	const plainBuffer = Uint8Array.from(atob(plaintext), c => c.charCodeAt(0))
 	const publicKeyBuffer = Uint8Array.from(atob(publicKey), c => c.charCodeAt(0))
