@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { createChangePasswordDialogStore } from '../store/';
 	import { createMessageBoxStore } from '$lib/components/message-box/store/';
+
 	const state = createChangePasswordDialogStore();
 	const messageBoxStore = createMessageBoxStore();
 
@@ -49,7 +50,9 @@
 	};
 </script>
 
-<Dialog.Root open={$state.show}>
+<Dialog.Root
+	open={$state.show}
+	closeOnOutsideClick={false}>
 	<Dialog.Portal>
 		<Dialog.Overlay
 			transition={fade}

@@ -1,9 +1,9 @@
+import type { ApplyOtpResponse } from '$lib/models/v1/punchIn'
 import { writable, get } from 'svelte/store'
 import { applyOtp, changePassword } from '$lib/apis/v1/punchIn'
 import { createMessageBoxStore } from '$lib/components/message-box/store'
 import { createSpinnerStore } from '$lib/components/spinner/store'
 import { isAxiosError } from 'axios'
-import type { ApplyOtpResponse } from '$lib/models/v1/punchIn'
 import { encrypt } from '$lib/utils/rsa'
 
 export interface ChangePasswordDialogState {
@@ -37,8 +37,15 @@ export function createChangePasswordDialogStore() {
     return {
         subscribe: store.subscribe,
         show: (punchInId: number) => store.update(s => ({ ...s, punchInId, show: true })),
-        hide: () => store.update(s => ({ ...s, show: false })),
-        reset: () => store.update(s => ({ ...s, ...initState })),
+        reset: () => {
+            const state = get(store)
+
+            if (state.otpCounter !== null) {
+                clearInterval(state.otpCounter)
+            }
+
+            store.update(s => ({ ...s, ...initState }))
+        },
         changePassword: async () => {
             const { punchInId, otpKey, otp, newPassword } = get(store)
 
