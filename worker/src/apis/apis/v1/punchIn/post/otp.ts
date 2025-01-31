@@ -137,7 +137,7 @@ app.openapi(
 
 		await mailPunchInOtp(c.env, email, otp)
 
-		await c.env.KV.put(applyRecordKey, dayjs().format('YYYY-MM-DD HH:mm:ss'))
+		await c.env.KV.put(applyRecordKey, now.format('YYYY-MM-DD HH:mm:ss'))
 
 		return c.json({
 			code: 0,
