@@ -84,9 +84,9 @@ app.openapi(
 
 		const { email } = await c.env.DB
 			.prepare(`
-				SELECT email
-				FROM   TB_USER
-				WHERE  user_id = ?1 `)
+				SELECT notify_email AS email
+				FROM   TB_PUNCH_IN
+				WHERE  punch_in_id = ?1 `)
 			.bind(userId)
 			.first<{ email: string }>() ?? { email: '' }
 
