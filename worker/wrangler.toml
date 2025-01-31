@@ -9,22 +9,12 @@ crons = ["0 7 * * *", "5 7 * * *", "10 7 * * *", "0 0 * * *"]
 
 [env.staging.vars]
 CORS_ORIGIN = "http://localhost:5173"
-JWT_SECRET = ""
-RSA_PRIVATE_KEY = ""
 ENABLE_AUTHORIZATION = "true"
-SENSITIVE_DATA_KEY = ""
-SENSITIVE_DATA_IV = ""
-RESEND_API_KEY = ""
 SCHEDULE_BASE_URL = "http://localhost:5173/ssoLogin"
 
 [env.production.vars]
 CORS_ORIGIN = "https://workerrr-web.0000886.xyz"
-JWT_SECRET = ""
-RSA_PRIVATE_KEY = ""
 ENABLE_AUTHORIZATION = "true"
-SENSITIVE_DATA_KEY = ""
-SENSITIVE_DATA_IV = ""
-RESEND_API_KEY = ""
 SCHEDULE_BASE_URL = "	https://workerrr-web.0000886.xyz/ssoLogin"
 
 [[d1_databases]]
