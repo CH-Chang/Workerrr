@@ -118,7 +118,7 @@ app.openapi(
 				WHERE  otp_key = ?1
 					AND otp_purpose = ?2
 					AND user_id = ?3
-					AND otp_expiration_datetime < DATETIME('now') `)
+					AND otp_expiration_datetime > DATETIME('now') `)
 			.bind(otpKey, 'punchIn', userId)
 			.first<{ otpArgument: string, otp: string }>()
 
