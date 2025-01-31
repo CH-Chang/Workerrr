@@ -82,6 +82,19 @@ app.openapi(
 
 		const { punchInId } = await c.req.json<PunchInOtpRequest>()
 
+		const now = dayjs()
+
+		const applyRecordKey = `OTP_EMAIL_PUNCH_IN_LAST_TIME_${userId}`
+		const lastApplyRecordTime = await c.env.KV.get(applyRecordKey)
+
+		if (lastApplyRecordTime != null) {
+			const lastApplyTime = dayjs(lastApplyRecordTime, 'YYYY-MM-DD HH:mm:ss', true)
+			if (now.diff(lastApplyTime, 'seconds') <= 180) return c.json({
+				code: 1,
+				message: '請勿頻繁申請 Email 一次驗證碼'
+			}, 400)
+		}
+
 		const { email } = await c.env.DB
 			.prepare(`
 				SELECT notify_email AS email
@@ -123,6 +136,8 @@ app.openapi(
 			.run()
 
 		await mailPunchInOtp(c.env, email, otp)
+
+		await c.env.KV.put(applyRecordKey, dayjs().format('YYYY-MM-DD HH:mm:ss'))
 
 		return c.json({
 			code: 0,
