@@ -139,7 +139,7 @@
 		{:else}
 			{#each $punchInStore.punchIns as punchIn}
 				<div class="flex flex-row items-center justify-center py-2">
-					<div class="flex-1 px-2">
+					<div class="flex-1">
 						<p class="text-zinc-200 text-sm">
 							{punchIn.punchInType.toUpperCase()} - {punchIn.punchInAccount}
 						</p>
