@@ -60,7 +60,7 @@
 			class="fixed z-5 inset-0 bg-black/60"
 		/>
 		<Dialog.Content
-			class="z-5 flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50 min-w-[80%] min-h-[20%] md:min-w-[30%] bg-slate-200 px-8 py-6 rounded-2xl"
+			class="z-5 flex flex-col gap-2 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] min-w-[80%] min-h-[20%] md:min-w-[30%] bg-slate-200 px-8 py-6 rounded-2xl"
 		>
 			<div class="flex flex-col">
 				<Dialog.Title class="text-lg font-medium font-noto">更改密碼</Dialog.Title>
