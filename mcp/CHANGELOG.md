@@ -1,5 +1,11 @@
 # @workerrr/mcp
 
+## 1.0.2
+
+### Patch Changes
+
+- 5ea1f5e: try fix shebang issue
+
 ## 1.0.1
 
 ### Patch Changes
