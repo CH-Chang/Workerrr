@@ -6,5 +6,3 @@ export interface PunchInRow {
 	punchInPassword: string
 	notifyEmail: string
 }
-
-export type PunchInTask = (punchInAccount: string, punchInPassword: string) => Promise<{ punchInStatus: boolean, punchInMemo: string }>
