@@ -7,14 +7,14 @@
   ],
   "main": "dist/index.js",
   "bin": {
-    "mcp-server-workerrr": "./dist/index.js",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "changeset publish"
+    "mcp-server-workerrr": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
   },
   "keywords": [
     "Workerrr",
