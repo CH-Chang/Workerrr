@@ -5,23 +5,38 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema
 } from '@modelcontextprotocol/sdk/types.js';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
-
+const tools = [
+  {
+    name: systexPunchIn.name,
+    description: systexPunchIn.description,
+    inputSchema: zodToJsonSchema(systexPunchIn.inputSchema),
+    feature: systexPunchIn.feature
+  }
+];
 
 async function main() {
-  const server = new Server({
-    name: "workerrr-mcp-server",
-    version: "1.0.0"
-  });
+  const server = new Server(
+    {
+      name: 'workerrr-mcp',
+      version: '1.0.0',
+    },
+    {
+      capabilities: {
+        tools: {},
+        resources: {},
+      },
+    },
+  );
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     try {
-      switch (request.params.name) {
-        case systexPunchIn.name:
-          return systexPunchIn.feature();
-        default:
-          throw new Error(`Unknown tool: ${request.params.name}`);
+      const tool = tools.find(t => t.name === request.params.name);
+      if (!tool) {
+        throw new Error(`Unknown tool: ${request.params.name}`);
       }
+      return await tool.feature(request.params.input ?? {});
     } catch (e) {
       const message = `Error: ${e instanceof Error ? e.message : String(e)}`;
       return {
@@ -29,19 +44,17 @@ async function main() {
         isError: true
       };
     }
-  })
+  });
 
   server.setRequestHandler(ListToolsRequestSchema, () => {
     return {
-      tools: [
-        {
-          name: systexPunchIn.name,
-          description: systexPunchIn.description,
-          inputSchema: systexPunchIn.inputSchema
-        }
-      ]
-    }
-  })
+      tools: tools.map(({ name, description, inputSchema }) => ({
+        name,
+        description,
+        inputSchema
+      }))
+    };
+  });
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

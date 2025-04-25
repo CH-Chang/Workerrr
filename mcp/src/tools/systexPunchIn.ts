@@ -6,7 +6,7 @@ const decodeBase64 = (str: string): string => Buffer.from(str, 'base64').toStrin
 export const name = "systex-punch-in";
 export const description = "Clock-in for employees working at SYSTEX Corporation(精誠資訊).";
 export const inputSchema = z.object({});
-export const feature = async () => {
+export const feature = async (options: {}) => {
     const encodedAccount = process.env.WORKERRR_PUNCH_IN_SYSTEX_ACCOUNT;
     const encodedPassword = process.env.WORKERRR_PUNCH_IN_SYSTEX_PASSWORD;
 
