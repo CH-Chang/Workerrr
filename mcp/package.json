@@ -1,0 +1,28 @@
+{
+  "name": "@workerrr/mcp",
+  "version": "1.0.0",
+  "description": "Workerrr for the Model Context Protocol (MCP)",
+  "files": ["dist"],
+  "bin": {
+    "mcp-server-workerrr": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": ["Workerrr", "MCP"],
+  "author": "CH-CHang",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.15.0+sha1.8bfdb6d72b4d5fdf87d21d27f2bfbe2b21dd2629",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "@workerrr/core": "file:deps/workerrr-core-1.0.0.tgz",
+    "dayjs": "^1.11.13",
+    "zod": "^3.24.3"
+  }
+}
