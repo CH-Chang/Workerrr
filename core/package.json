@@ -1,6 +1,6 @@
 {
   "name": "@workerrr/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,13 +8,17 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c && rimraf dist/types"
+    "build": "rollup -c && rimraf dist/types",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
   },
   "keywords": [],
   "author": "CH-Chang",
   "license": "UNLICENSED",
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
+    "@changesets/cli": "^2.29.2",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
