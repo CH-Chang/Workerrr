@@ -1,0 +1,19 @@
+{
+  "name": "workerrr-server",
+  "version": "1.0.0",
+  "description": "Workerrr server monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.15.0+sha1.8bfdb6d72b4d5fdf87d21d27f2bfbe2b21dd2629",
+  "scripts": {
+    "build": "pnpm -r build",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
