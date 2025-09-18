@@ -16,7 +16,6 @@
   "keywords": [],
   "author": "CH-Chang",
   "license": "UNLICENSED",
-  "packageManager": "pnpm@10.6.5",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-json": "^6.1.0",
