@@ -1,8 +1,8 @@
-import { type PunchInTask } from "../share"
+import { type PunchInTask } from "../share.mjs"
 import { CookieJar } from 'tough-cookie'
-import { loginEip } from './systex/eip'
-import { loginBMS } from './systex/bms'
-import { punch } from './systex/punch'
+import { loginEip } from './systex/eip.mjs'
+import { loginBMS } from './systex/bms.mjs'
+import { punch } from './systex/punch.mjs'
 
 const task: PunchInTask = async (punchInAccount: string, punchInPassword: string): Promise<{ punchInStatus: boolean, punchInMemo: string }> => {
 	const jar = new CookieJar()
