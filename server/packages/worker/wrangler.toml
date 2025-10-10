@@ -5,7 +5,7 @@ compatibility_date = "2024-07-22"
 node_compat = true
 
 [triggers]
-crons = ["0 7 * * *", "5 7 * * *", "10 7 * * *", "0 0 * * *"]
+crons = ["*/5 7-15 * * *", "0 0 * * *"]
 
 [vars]
 CORS_ORIGIN = "https://workerrr-web.0000886.xyz"
