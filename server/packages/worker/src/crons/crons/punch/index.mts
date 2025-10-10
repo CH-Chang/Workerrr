@@ -30,7 +30,7 @@ const queryPunchIn = async (env: Env): Promise<{ success: boolean, punchIns: Pun
 				-- 排除當天嘗試失敗三次
 				AND P.punch_in_id NOT IN (SELECT L2.punch_in_id
                             FROM   TB_PUNCH_IN_LOG AS L2
-                            WHERE  L2.punch_in_status = 'Fail'
+                            WHERE  L2.punch_in_status = 'Failed'
                                     AND Substr(L2.punch_in_datetime, 0, 11) =
                                         Date('now', 'localtime')
                             GROUP BY L2.punch_in_id
