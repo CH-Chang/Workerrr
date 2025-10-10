@@ -139,7 +139,7 @@ const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: st
 	const loginResponseText = await loginResponse.text()
 
 	if (loginResponse.status !== 200) {
-		return { success: false, memo: 'EIP登入回傳非200的狀態碼' }
+		return { success: false, memo: `EIP登入回傳非200的狀態碼(${loginResponse.status})` }
 	}
 
 	if (!loginResponseText.includes('Authentication.aspx'))
@@ -150,7 +150,7 @@ const login = async (jar: CookieJar, punchInAccount: string, punchInPassword: st
 		const overLoginResponseText = await overLoginResponse.text()
 
 		if (overLoginResponse.status !== 200) {
-			return { success: false, memo: 'EIP重複登入回傳非200的狀態碼' }
+			return { success: false, memo: `EIP重複登入回傳非200的狀態碼(${overLoginResponse.status})` }
 		}
 
 		if (!overLoginResponseText.includes('Authentication.aspx')) {

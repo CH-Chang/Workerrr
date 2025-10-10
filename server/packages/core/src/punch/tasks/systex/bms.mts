@@ -70,7 +70,7 @@ const login = async (jar: CookieJar): Promise<{ success: boolean, memo: string, 
 	const bmsSSOData = await prepareBMSSSOData(jar)
 	const bmsSSOHeaders = prepareBMSSSOHeaders()
 	const bmsSSOResponse = await requests.post(jar, `${EIP_BASE_URL}/UOF/Homepage.aspx`, bmsSSOData, bmsSSOHeaders)
-	if (bmsSSOResponse.status !== 200) return { success: false, memo: 'BMS登入回傳非200的狀態碼', guid: '' }
+	if (bmsSSOResponse.status !== 200) return { success: false, memo: `BMS登入回傳非200的狀態碼(${bmsSSOResponse.status})`, guid: '' }
 
 	const bmsSSOResponseText = await bmsSSOResponse.text()
 	const bmsUrlMatched = new RegExp('window\\.open\\(\\\'(.*)\\\'\\)').exec(bmsSSOResponseText)
@@ -83,7 +83,7 @@ const login = async (jar: CookieJar): Promise<{ success: boolean, memo: string, 
 	if (typeof guid !== 'string') return { success: false, memo: '取得BMS SSO登入雜湊失敗', guid: '' }
 
 	const loginBMSResponse = await requests.get(jar, bmsUrl)
-	if (loginBMSResponse.status !== 200) return { success: false, memo: '登入BMS回傳非200的狀態碼', guid: '' }
+	if (loginBMSResponse.status !== 200) return { success: false, memo: `登入BMS回傳非200的狀態碼(${loginBMSResponse.status})`, guid: '' }
 
 	return { success: true, memo: '', guid: guid }
 }
