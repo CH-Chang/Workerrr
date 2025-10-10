@@ -1,5 +1,13 @@
 # @workerrr/mcp
 
+## 1.0.3
+
+### Patch Changes
+
+- b46e908: Support esm
+- Updated dependencies [b46e908]
+  - @workerrr/core@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
