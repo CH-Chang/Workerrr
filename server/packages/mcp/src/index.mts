@@ -1,6 +1,6 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import * as systexPunchIn from './tools/systexPunchIn';
+import * as systexPunchIn from './tools/systexPunchIn.mjs';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema

@@ -2,17 +2,18 @@
   "name": "@workerrr/mcp",
   "version": "1.0.2",
   "description": "Workerrr for the Model Context Protocol (MCP)",
+  "type": "module",
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "bin": {
-    "mcp-server-workerrr": "./dist/index.js"
+    "mcp-server-workerrr": "./dist/index.mjs"
   },
   "scripts": {
     "build": "tsc",
-    "postbuild": "node ./scripts/add-shebang.js",
-    "dev": "ts-node src/index.ts",
+    "postbuild": "node ./scripts/add-shebang.cjs",
+    "dev": "node --loader ts-node/esm src/index.mts",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"
@@ -24,15 +25,15 @@
   "author": "CH-CHang",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.18.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.0.0"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.2",
+    "@modelcontextprotocol/sdk": "^1.20.0",
     "@workerrr/core": "workspace:*",
-    "dayjs": "^1.11.13",
-    "zod": "^3.24.3",
-    "zod-to-json-schema": "^3.24.5"
+    "dayjs": "^1.11.18",
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "^3.24.6"
   }
 }
