@@ -1,5 +1,5 @@
 import { createRoute, z } from '@hono/zod-openapi'
-import { app } from '../../../../app'
+import { app } from '../../../../app.mjs'
 import { authentication } from '../../../../middlewares/authorization'
 import { cors } from '../../../../middlewares/cors'
 

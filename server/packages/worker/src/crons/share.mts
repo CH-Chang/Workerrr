@@ -1,4 +1,4 @@
-import { type Env } from '../share'
+import { type Env } from '../share.mjs'
 
 export interface CronRow {
 	cronId: number

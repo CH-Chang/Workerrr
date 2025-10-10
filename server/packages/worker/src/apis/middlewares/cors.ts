@@ -1,4 +1,4 @@
-import { type HonoEnv } from '../share'
+import { type HonoEnv } from '../share.mjs'
 import { createMiddleware } from 'hono/factory'
 import { cors as honoCors } from 'hono/cors'
 

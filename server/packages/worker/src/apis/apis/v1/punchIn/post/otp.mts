@@ -1,9 +1,9 @@
 import { createRoute, z } from '@hono/zod-openapi'
 import { nanoid } from 'nanoid'
-import { app } from '../../../../app'
+import { app } from '../../../../app.mjs'
 import { authentication } from '../../../../middlewares/authorization'
 import { cors } from '../../../../middlewares/cors'
-import { mailPunchInOtp } from '../../../../../share/utils/mailer'
+import { mailPunchInOtp } from '../../../../../share/utils/mailer.mjs'
 import dayjs from 'dayjs'
 
 interface PunchInOtpRequest {

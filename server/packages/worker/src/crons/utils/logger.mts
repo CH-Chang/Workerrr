@@ -1,4 +1,4 @@
-import { type Env } from '../../share'
+import { type Env } from '../../share.mjs'
 import dayjs from 'dayjs'
 
 export const cleanup = async (env: Env): Promise<void> => {

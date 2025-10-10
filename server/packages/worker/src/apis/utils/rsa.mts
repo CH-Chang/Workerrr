@@ -1,4 +1,4 @@
-import { Env } from '../../share'
+import { Env } from '../../share.mjs'
 
 export const decrypt = async (env: Env, cipherText: string) => {
 	const privateKey = env.RSA_PRIVATE_KEY

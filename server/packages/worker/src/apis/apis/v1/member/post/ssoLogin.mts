@@ -1,6 +1,6 @@
 import { createRoute, z } from '@hono/zod-openapi'
-import { sign } from '../../../../utils/jwt'
-import { app } from '../../../../app'
+import { sign } from '../../../../utils/jwt.mjs'
+import { app } from '../../../../app.mjs'
 import { cors } from '../../../../middlewares/cors'
 
 interface SSOLoginRequest {

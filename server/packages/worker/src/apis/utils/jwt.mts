@@ -1,5 +1,5 @@
 import jwt from '@tsndr/cloudflare-worker-jwt'
-import { Env } from '../../share'
+import { Env } from '../../share.mjs'
 
 export const sign = async (env: Env, userId: number): Promise<string> => {
 	const secret = env.JWT_SECRET

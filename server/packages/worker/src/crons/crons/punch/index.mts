@@ -1,7 +1,7 @@
-import { type Env } from '../../../share'
-import { type CronTask } from '../../share'
-import { type PunchInRow } from './share'
-import { runPunchIn } from './utils/runner'
+import { type Env } from '../../../share.mjs'
+import { type CronTask } from '../../share.mjs'
+import { type PunchInRow } from './share.mjs'
+import { runPunchIn } from './utils/runner.mjs'
 import pLimit from "p-limit"
 
 interface PunchCronTaskArguments {

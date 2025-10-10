@@ -1,4 +1,4 @@
-import { Env } from "../../share"
+import { Env } from "../../share.mjs"
 
 export const decrypt = async (env: Env, cipherText: string): Promise<string> => {
 	const decoder = new TextDecoder()

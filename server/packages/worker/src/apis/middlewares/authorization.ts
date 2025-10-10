@@ -1,6 +1,6 @@
-import { type HonoEnv } from '../share'
+import { type HonoEnv } from '../share.mjs'
 import { createMiddleware } from 'hono/factory'
-import { verify } from '../utils/jwt'
+import { verify } from '../utils/jwt.mjs'
 
 const SKIP_AUTHORIZATION_PATHS = [
 	'/api/v1/member/ssoLogin'

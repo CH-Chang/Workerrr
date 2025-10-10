@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
-import { type Env } from '../../../share'
-import { type CronTask } from '../../share'
+import { type Env } from '../../../share.mjs'
+import { type CronTask } from '../../share.mjs'
 import { nanoid } from 'nanoid'
-import { mailSchedule } from '../../../share/utils/mailer'
+import { mailSchedule } from '../../../share/utils/mailer.mjs'
 import pLimit from 'p-limit'
 import qs from 'qs'
 

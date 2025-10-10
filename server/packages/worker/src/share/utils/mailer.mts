@@ -1,9 +1,9 @@
-import { type Env } from '../../share'
+import { type Env } from '../../share.mjs'
 import { Resend } from 'resend'
-import { render as renderPunchIn } from '../template/punchIn'
-import { render as renderSchedule } from '../template/schedule'
-import { render as renderPunchInOtp } from '../template/punchInOtp'
-import { logEmail } from './logger'
+import { render as renderPunchIn } from '../template/punchIn.mjs'
+import { render as renderSchedule } from '../template/schedule.mjs'
+import { render as renderPunchInOtp } from '../template/punchInOtp.mjs'
+import { logEmail } from './logger.mjs'
 import AsyncLock from 'async-lock'
 
 const locker = new AsyncLock()

@@ -1,8 +1,8 @@
-import { type PunchInRow } from '../share'
-import { type Env } from '../../../../share'
-import { mailPunchIn } from '../../../../share/utils/mailer'
-import { logPunchIn } from '../../../utils/logger'
-import { decrypt } from '../../../../share/utils/aes'
+import { type PunchInRow } from '../share.mjs'
+import { type Env } from '../../../../share.mjs'
+import { mailPunchIn } from '../../../../share/utils/mailer.mjs'
+import { logPunchIn } from '../../../utils/logger.mjs'
+import { decrypt } from '../../../../share/utils/aes.mjs'
 import { systemPunchTask, type PunchInTask } from '@workerrr/core'
 
 const taskMap: Record<string, PunchInTask> = {

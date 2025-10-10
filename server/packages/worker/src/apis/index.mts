@@ -1,4 +1,4 @@
-import { app } from './app'
+import { app } from './app.mjs'
 import { swaggerUI } from '@hono/swagger-ui'
 import { cors } from './middlewares/cors'
 
@@ -30,12 +30,12 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 
 app.use('/api/v1/*', cors)
 
-import './apis/v1/member/post/ssoLogin'
-import './apis/v1/member/get/user'
-import './apis/v1/punchIn/get/log'
-import './apis/v1/punchIn/get/root'
-import './apis/v1/punchIn/put/cancel'
-import './apis/v1/punchIn/put/password'
-import './apis/v1/punchIn/post/otp'
+import './apis/v1/member/post/ssoLogin.mjs'
+import './apis/v1/member/get/user.mjs'
+import './apis/v1/punchIn/get/log.mjs'
+import './apis/v1/punchIn/get/root.mjs'
+import './apis/v1/punchIn/put/cancel.mjs'
+import './apis/v1/punchIn/put/password.mjs'
+import './apis/v1/punchIn/post/otp.mjs'
 
 export const fetch = app.fetch
