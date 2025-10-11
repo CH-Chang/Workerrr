@@ -1,0 +1,41 @@
+{
+  "name": "@workerrr/cli",
+  "version": "1.0.0",
+  "description": "Workerrr cli",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.mjs",
+  "bin": {
+    "workerrr": "./dist/index.mjs"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "node ./scripts/add-shebang.cjs",
+    "dev": "node --loader ts-node/esm src/index.mts",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
+  },
+  "keywords": [
+    "Workerrr",
+    "CLI"
+  ],
+  "author": "CH-CHang",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^22.18.9",
+    "@types/node-notifier": "^8.0.5",
+    "@types/prompts": "^2.4.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@workerrr/core": "workspace:*",
+    "commander": "^14.0.1",
+    "node-notifier": "^10.0.1",
+    "prompts": "^2.4.2",
+    "zod": "^3.25.76"
+  }
+}
