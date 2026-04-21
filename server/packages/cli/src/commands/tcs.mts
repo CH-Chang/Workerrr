@@ -76,11 +76,11 @@ tcsCommand
   .action(async () => {
     try {
       const { account, password } = await getCredentials();
-      const { dates, depid, empid } = await getUnsubmittedReports(account, password);
+      const { dates } = await getUnsubmittedReports(account, password);
       const targetDate = dates[0] || dayjs().format('YYYY/M/D');
 
       console.log(`正在抓取專案選單 (${targetDate})...`);
-      const projects = await getProjectMenus(depid, empid, targetDate, account, password);
+      const projects = await getProjectMenus(targetDate, account, password);
       console.log(JSON.stringify(projects, null, 2));
     } catch (error) {
       console.error('執行失敗:', error instanceof Error ? error.message : '未知錯誤');
@@ -121,7 +121,7 @@ tcsCommand
   .action(async (options) => {
     try {
       const { account, password } = await getCredentials();
-      const { dates, depid, empid } = await getUnsubmittedReports(account, password);
+      const { dates } = await getUnsubmittedReports(account, password);
 
       const targetDate = options.date || dates[0];
       if (!targetDate) {
@@ -158,7 +158,7 @@ tcsCommand
       }
 
       console.log(`正在提交日報 (${targetDate}, 共 ${entries.length} 筆)...`);
-      const result = await submitDailyReports(depid, empid, targetDate, entries, account, password);
+      const result = await submitDailyReports(targetDate, entries, account, password);
 
       console.log(result.memo);
       showNotification({ title: 'Workerrr - TCS 提交', message: result.memo });

@@ -6,8 +6,6 @@ const decodeBase64 = (str: string): string => Buffer.from(str, 'base64').toStrin
 export const name = "systex-tcs-submit";
 export const description = "Submit daily reports to SYSTEX TCS system.";
 export const inputSchema = z.object({
-    depid: z.string().describe("Department ID"),
-    empid: z.string().describe("Employee ID"),
     date: z.string().describe("The date of the report (YYYY/M/D)"),
     entries: z.array(z.object({
         projectId: z.string(),
@@ -19,7 +17,7 @@ export const inputSchema = z.object({
         memo: z.string()
     })).describe("List of report entries")
 });
-export const feature = async (options: { depid: string, empid: string, date: string, entries: any[] }) => {
+export const feature = async (options: { date: string, entries: any[] }) => {
     const encodedAccount = process.env.WORKERRR_PUNCH_IN_SYSTEX_ACCOUNT;
     const encodedPassword = process.env.WORKERRR_PUNCH_IN_SYSTEX_PASSWORD;
 
@@ -34,7 +32,7 @@ export const feature = async (options: { depid: string, empid: string, date: str
     const password = decodeBase64(encodedPassword);
     
     try {
-        const result = await submitDailyReports(options.depid, options.empid, options.date, options.entries, account, password);
+        const result = await submitDailyReports(options.date, options.entries, account, password);
         return {
             content: [{
                 type: "text",

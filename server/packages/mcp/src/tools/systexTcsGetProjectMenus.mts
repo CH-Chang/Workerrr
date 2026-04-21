@@ -6,11 +6,9 @@ const decodeBase64 = (str: string): string => Buffer.from(str, 'base64').toStrin
 export const name = "systex-tcs-get-project-menus";
 export const description = "Get project and sub-project menus for a specific employee and date in SYSTEX TCS system.";
 export const inputSchema = z.object({
-    depid: z.string().describe("Department ID"),
-    empid: z.string().describe("Employee ID"),
     date: z.string().describe("The date (YYYY/M/D)")
 });
-export const feature = async (options: { depid: string, empid: string, date: string }) => {
+export const feature = async (options: { date: string }) => {
     const encodedAccount = process.env.WORKERRR_PUNCH_IN_SYSTEX_ACCOUNT;
     const encodedPassword = process.env.WORKERRR_PUNCH_IN_SYSTEX_PASSWORD;
 
@@ -25,7 +23,7 @@ export const feature = async (options: { depid: string, empid: string, date: str
     const password = decodeBase64(encodedPassword);
     
     try {
-        const result = await getProjectMenus(options.depid, options.empid, options.date, account, password);
+        const result = await getProjectMenus(options.date, account, password);
         return {
             content: [{
                 type: "text",

@@ -34,8 +34,9 @@ export const getUnsubmittedReports = async (account?: string, password?: string,
 	return getUnsubmittedReportsRaw(jar, tcsUrl, startDate, endDate)
 }
 
-export const getProjectMenus = async (depid: string, empid: string, date: string, account?: string, password?: string) => {
+export const getProjectMenus = async (date: string, account?: string, password?: string) => {
 	const { jar, tcsUrl } = await getAuthenticatedTcsSession(account, password)
+	const { depid, empid } = await getUnsubmittedReportsRaw(jar, tcsUrl)
 	return getProjectMenusRaw(jar, tcsUrl, depid, empid, date)
 }
 
@@ -51,7 +52,8 @@ export const searchProjects = async (keyword: string, account?: string, password
 	return searchProjectsRaw(jar, tcsUrl, depid, workdt, keyword)
 }
 
-export const submitDailyReports = async (depid: string, empid: string, date: string, entries: DailyReportEntry[], account?: string, password?: string) => {
+export const submitDailyReports = async (date: string, entries: DailyReportEntry[], account?: string, password?: string) => {
 	const { jar, tcsUrl } = await getAuthenticatedTcsSession(account, password)
+	const { depid, empid } = await getUnsubmittedReportsRaw(jar, tcsUrl)
 	return submitDailyReportsRaw(jar, tcsUrl, depid, empid, date, entries)
 }
