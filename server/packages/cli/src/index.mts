@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { configCommand } from './commands/config.mjs';
 import { punchInCommand } from './commands/punchIn.mjs';
+import { tcsCommand } from './commands/tcs.mjs';
 
 const program = new Command();
 
@@ -13,5 +14,6 @@ program
 
 program.addCommand(configCommand);
 program.addCommand(punchInCommand);
+program.addCommand(tcsCommand);
 
 program.parse();
