@@ -1,6 +1,6 @@
 {
   "name": "@workerrr/mcp",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Workerrr for the Model Context Protocol (MCP)",
   "type": "module",
   "files": [
