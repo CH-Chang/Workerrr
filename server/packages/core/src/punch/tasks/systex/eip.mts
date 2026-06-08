@@ -24,9 +24,11 @@ const prepareLoginData = async (jar: CookieJar, punchInAccount: string, punchInP
 	const viewState = $('input[name="__VIEWSTATE"]').val() as string
 	const viewStateGenerator = $('input[name="__VIEWSTATEGENERATOR"]').val() as string
 	const viewStateEncrypted = $('input[name="__VIEWSTATEENCRYPTED"]').val() as string
+	const eventValidation = $('input[name="__EVENTVALIDATION"]').val() as string
 	const hdFlag = $('input[name="hdflag"]').val() as string
 	const hfIsAdAuth = $('input[name="hfIsAdAuth"]').val() as string
 	const hfUserGuid = ''
+	const hfIsDownloadComplete = $('input[name="hfIsDownloadComplete"]').val() as string || '0'
 
 	let scriptManager1TSM = ''
 
@@ -52,6 +54,7 @@ const prepareLoginData = async (jar: CookieJar, punchInAccount: string, punchInP
 		'__VIEWSTATE': viewState,
 		'__VIEWSTATEGENERATOR': viewStateGenerator,
 		'__VIEWSTATEENCRYPTED': viewStateEncrypted,
+		'__EVENTVALIDATION': eventValidation,
 		'ddlCulture': ddiCulture,
 		'txtAccount': txtAccount,
 		'txtPwd': txtPwd,
@@ -59,6 +62,7 @@ const prepareLoginData = async (jar: CookieJar, punchInAccount: string, punchInP
 		'hdflag': hdFlag,
 		'hfIsAdAuth': hfIsAdAuth,
 		'hfUserGuid': hfUserGuid,
+		'hfIsDownloadComplete': hfIsDownloadComplete,
 		'__ASYNCPOST': asyncPost,
 		'btnSubmit': btnSubmit
 	}
@@ -90,6 +94,7 @@ const prepareOverLoginData = async (jar: CookieJar, loginData: string, loginResp
 	const viewState = new RegExp('__VIEWSTATE\\|([^|]+)').exec(loginResponseText)?.[1]
 	const viewStateGenerator = 'C873A585'
 	const viewStateEncrypted = ''
+	const eventValidation = new RegExp('__EVENTVALIDATION\\|([^|]+)').exec(loginResponseText)?.[1]
 	const ddlCulture = 'zh-TW'
 	const txtAccount = parsed['txtAccount'] as string
 	const txtPwd = ''
@@ -110,6 +115,7 @@ const prepareOverLoginData = async (jar: CookieJar, loginData: string, loginResp
 		'__VIEWSTATE': viewState,
 		'__VIEWSTATEGENERATOR': viewStateGenerator,
 		'__VIEWSTATEENCRYPTED': viewStateEncrypted,
+		'__EVENTVALIDATION': eventValidation,
 		'ddlCulture': ddlCulture,
 		'txtAccount': txtAccount,
 		'txtPwd': txtPwd,
