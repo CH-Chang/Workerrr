@@ -49,7 +49,7 @@ async function main() {
       if (!tool) {
         throw new Error(`Unknown tool: ${request.params.name}`);
       }
-      return await tool.feature(request.params.input ?? {});
+      return await tool.feature(request.params.arguments ?? {});
     } catch (e) {
       const message = `Error: ${e instanceof Error ? e.message : String(e)}`;
       return {
