@@ -1,6 +1,6 @@
 {
   "name": "@workerrr/cli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Workerrr cli",
   "type": "module",
   "files": [
@@ -24,6 +24,9 @@
   ],
   "author": "CH-CHang",
   "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/node": "^22.18.9",
     "@types/node-notifier": "^8.0.5",

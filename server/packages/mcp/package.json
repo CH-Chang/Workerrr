@@ -1,6 +1,6 @@
 {
   "name": "@workerrr/mcp",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Workerrr for the Model Context Protocol (MCP)",
   "type": "module",
   "files": [
@@ -24,6 +24,9 @@
   ],
   "author": "CH-CHang",
   "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/node": "^22.18.9",
     "ts-node": "^10.9.2",
