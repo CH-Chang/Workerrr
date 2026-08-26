@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: server/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm -r build
+
+      - name: Typecheck
+        run: |
+          for pkg in core cli mcp; do
+            echo "::group::@workerrr/$pkg"
+            pnpm --filter "@workerrr/$pkg" exec tsc --noEmit -p tsconfig.json
+            echo "::endgroup::"
+          done
+
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject committed .DS_Store
+        run: |
+          if git ls-files | grep -i '\.DS_Store$'; then
+            echo "::error::.DS_Store is tracked; remove it with git rm --cached <path>"
+            exit 1
+          fi
