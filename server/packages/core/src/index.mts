@@ -5,7 +5,8 @@ import {
     getWorkTypeMenus,
     submitDailyReports,
     searchProjects,
-    invalidateTcsSession
+    invalidateTcsSession,
+    getDailyReportMemos
 } from './punch/tasks/tcs.mjs'
 
 export { PunchInTask } from './punch/share.mjs'
@@ -16,5 +17,6 @@ export {
     getWorkTypeMenus,
     submitDailyReports,
     searchProjects,
-    invalidateTcsSession
+    invalidateTcsSession,
+    getDailyReportMemos
 }

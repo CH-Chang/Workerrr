@@ -7,14 +7,14 @@ import {
 	getProjectMenus as getProjectMenusRaw, 
 	getWorkTypeMenus as getWorkTypeMenusRaw, 
 	submitDailyReports as submitDailyReportsRaw,
+	getDailyReportMemos as getDailyReportMemosRaw,
 	searchProjects as searchProjectsRaw,
 	DailyReportEntry
 } from './systex/tcs.mjs'
 
 type TcsSession = { jar: CookieJar, tcsUrl: string }
 
-// TCS 的頁面在 session 失效時不會回錯誤，只會回一個空表單，
-// 所以要靠「拿不到 depid/empid」來判斷 session 已經死掉
+// session 失效時 TCS 不回錯誤，只回空表單，所以靠拿不到 depid/empid 判斷
 class StaleTcsSessionError extends Error {
 	constructor() {
 		super('TCS session 已失效（查無部門/員工資料）')
@@ -27,7 +27,7 @@ const resolveTarget = async (jar: CookieJar, tcsUrl: string) => {
 	return result
 }
 
-// EIP/TCS 的 ASP session 大約 20 分鐘 idle timeout，取一半當保險
+// ASP session 約 20 分鐘 idle timeout，取一半當保險
 const SESSION_TTL_MS = 10 * 60 * 1000
 
 let cache: { key: string, session: TcsSession, createdAt: number } | null = null
@@ -69,7 +69,6 @@ const acquireTcsSession = async (account?: string, password?: string): Promise<{
 		return { session: cache.session, fromCache: true }
 	}
 
-	// 同一把 key 已有登入流程在跑就一起等，避免併發的 tool call 各自重登一次
 	if (pendingPromise !== null && pendingKey === key) {
 		return { session: await pendingPromise, fromCache: false }
 	}
@@ -91,8 +90,6 @@ const acquireTcsSession = async (account?: string, password?: string): Promise<{
 	return { session: await pendingPromise, fromCache: false }
 }
 
-// 快取的 session 可能已被 EIP 的重複登入機制踢掉，失敗就重登一次再試。
-// retryAnyError = false 時只在確認 session 失效（尚未產生副作用）才重試。
 const withTcsSession = async <T,>(
 	account: string | undefined,
 	password: string | undefined,
@@ -104,7 +101,6 @@ const withTcsSession = async <T,>(
 	try {
 		return await fn(session)
 	} catch (e) {
-		// 剛登入就失敗代表是真的錯誤，不是 session 過期
 		if (!fromCache) throw e
 
 		invalidateTcsSession()
@@ -143,10 +139,76 @@ export const searchProjects = async (keyword: string, account?: string, password
 	})
 }
 
-export const submitDailyReports = async (date: string, entries: DailyReportEntry[], account?: string, password?: string) => {
-	// 送出有副作用：只在 POST 之前就確認 session 失效時才重試，避免重複送出
+export const getDailyReportMemos = async (date: string, account?: string, password?: string) => {
 	return withTcsSession(account, password, async ({ jar, tcsUrl }) => {
 		const { depid, empid } = await resolveTarget(jar, tcsUrl)
-		return submitDailyReportsRaw(jar, tcsUrl, depid, empid, date, entries)
+		return getDailyReportMemosRaw(jar, tcsUrl, depid, empid, date)
+	})
+}
+
+export const submitDailyReports = async (date: string, entries: DailyReportEntry[], account?: string, password?: string) => {
+	return withTcsSession(account, password, async ({ jar, tcsUrl }) => {
+		const { depid, empid } = await resolveTarget(jar, tcsUrl)
+		return submitAndVerify(jar, tcsUrl, depid, empid, date, entries)
 	}, false)
+}
+
+const normalizeMemo = (s: string): string => s.replace(/\s+/g, ' ').trim()
+
+const findMangled = (sent: string[], stored: string[]): string[] => {
+	const remaining = stored.map(normalizeMemo)
+	const mangled: string[] = []
+
+	for (const raw of sent) {
+		const a = normalizeMemo(raw)
+		// 損壞是等長替換，所以先挑同長度、相同字元最多的那筆配對
+		let bestIdx = -1
+		let bestScore = -1
+		for (let i = 0; i < remaining.length; i++) {
+			const b = remaining[i]
+			if (b.length !== a.length) continue
+			let same = 0
+			for (let j = 0; j < a.length; j++) if (a[j] === b[j]) same++
+			if (same > bestScore) { bestScore = same; bestIdx = i }
+		}
+		if (bestIdx < 0) { mangled.push(`整筆對不上: ${a.slice(0, 20)}…`); continue }
+		const b = remaining.splice(bestIdx, 1)[0]
+		for (let j = 0; j < a.length; j++) {
+			if (a[j] !== b[j]) mangled.push(`${a[j]}→${b[j]}`)
+		}
+	}
+
+	return mangled
+}
+
+// TCS 偶發會把備注裡個別中文字換成 ? 或形近字；重送同一天是取代而非追加，所以重試安全
+const SUBMIT_VERIFY_ATTEMPTS = 4
+
+const submitAndVerify = async (
+	jar: CookieJar, tcsUrl: string, depid: string, empid: string,
+	date: string, entries: DailyReportEntry[]
+): Promise<{ success: boolean, memo: string }> => {
+	const sent = entries.map(e => e.memo || '')
+	let lastMangled: string[] = []
+
+	for (let attempt = 1; attempt <= SUBMIT_VERIFY_ATTEMPTS; attempt++) {
+		const result = await submitDailyReportsRaw(jar, tcsUrl, depid, empid, date, entries)
+		if (!result.success) return result
+
+		const stored = await getDailyReportMemosRaw(jar, tcsUrl, depid, empid, date)
+		if (stored.length !== entries.length) {
+			return { success: false, memo: `送出後讀回的筆數不符：預期 ${entries.length} 筆，實際 ${stored.length} 筆` }
+		}
+
+		lastMangled = findMangled(sent, stored)
+		if (lastMangled.length === 0) {
+			const note = attempt === 1 ? '' : `（第 ${attempt} 次送出才完整寫入）`
+			return { success: true, memo: `日報提交成功，已讀回驗證${note}` }
+		}
+	}
+
+	return {
+		success: false,
+		memo: `送出 ${SUBMIT_VERIFY_ATTEMPTS} 次後備注仍被 TCS 改字，請改寫用字後重試。最後一次的差異：${lastMangled.join('、')}`
+	}
 }

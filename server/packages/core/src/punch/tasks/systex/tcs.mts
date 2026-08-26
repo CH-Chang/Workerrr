@@ -369,6 +369,23 @@ export const searchProjects = async (jar: CookieJar, tcsBaseUrl: string, depno: 
 	return results
 }
 
+export const getDailyReportMemos = async (jar: CookieJar, tcsBaseUrl: string, depid: string, empid: string, date: string): Promise<string[]> => {
+	const baseUrl = tcsBaseUrl.endsWith('/') ? tcsBaseUrl : tcsBaseUrl.substring(0, tcsBaseUrl.lastIndexOf('/') + 1)
+	const listUrl = `${baseUrl}workreport/DayList.asp`
+	const postData = qs.stringify({ depdescs: depid, empnames: empid, workdts: date, workdte: date, emplist: empid })
+
+	const response = await requests.post(jar, listUrl, postData, {
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+		'Content-Type': 'application/x-www-form-urlencoded'
+	})
+
+	const buffer = await response.arrayBuffer()
+	const content = iconv.decode(Buffer.from(buffer), 'big5')
+	const $ = cheerio.load(content)
+
+	return $("td[width='200']").map((_, el) => $(el).text().trim()).get()
+}
+
 export const submitDailyReports = async (jar: CookieJar, tcsBaseUrl: string, depid: string, empid: string, date: string, entries: DailyReportEntry[], account?: string, password?: string): Promise<{ success: boolean, memo: string }> => {
 	const baseUrl = tcsBaseUrl.endsWith('/') ? tcsBaseUrl : tcsBaseUrl.substring(0, tcsBaseUrl.lastIndexOf('/') + 1)
 	const submitUrl = `${baseUrl}workreport/DayUpdate.asp`
