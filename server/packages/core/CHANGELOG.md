@@ -1,5 +1,11 @@
 # @workerrr/core
 
+## 1.1.0
+
+### Minor Changes
+
+- c8f30f4: support tcs daily report
+
 ## 1.0.5
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @workerrr/cloudflare-serverless
 
+## 1.1.0
+
+### Patch Changes
+
+- Updated dependencies [c8f30f4]
+  - @workerrr/core@1.1.0
+
 ## 1.0.5
 
 ### Patch Changes
