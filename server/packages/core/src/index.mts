@@ -4,7 +4,8 @@ import {
     getProjectMenus,
     getWorkTypeMenus,
     submitDailyReports,
-    searchProjects
+    searchProjects,
+    invalidateTcsSession
 } from './punch/tasks/tcs.mjs'
 
 export { PunchInTask } from './punch/share.mjs'
@@ -14,5 +15,6 @@ export {
     getProjectMenus,
     getWorkTypeMenus,
     submitDailyReports,
-    searchProjects
+    searchProjects,
+    invalidateTcsSession
 }
